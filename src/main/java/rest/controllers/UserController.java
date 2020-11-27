@@ -36,19 +36,17 @@ public class UserController {
     @PutMapping(value = "/user",
             headers = "Accept=application/json")
     public ResponseEntity<?> updateAccount(@RequestBody User user) {
-        if (userService.updateUser(user)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        userService.updateUser(user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/user")
-    public List<User> getAccounts(){
+    public List<User> getAccounts() {
         return userContainerService.getUsers();
     }
 
     @GetMapping(value = "/account/{id}")
-    public Optional<User> getUser(@PathVariable int id) {
+    public Optional<User> getUser(@PathVariable("id") int id) {
         return userContainerService.getUser(id);
     }
 }

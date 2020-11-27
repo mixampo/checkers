@@ -1,7 +1,7 @@
 package rest.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import models.Scoreboard;
+import models.ScoreboardItem;
 
-public interface ScoreboardJpaRepository extends JpaRepository<Scoreboard, Integer> {
+public interface ScoreboardJpaRepository extends JpaRepository<ScoreboardItem, Integer> {
 }

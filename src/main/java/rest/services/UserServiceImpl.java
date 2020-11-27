@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService {
     private UserJpaRepository userJpaRepository;
 
     @Override
-    public Boolean updateUser(User user) {
-        return null;
+    public void updateUser(User user) {
+        userJpaRepository.save(user);
     }
 }
