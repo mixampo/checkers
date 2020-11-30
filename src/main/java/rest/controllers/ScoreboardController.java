@@ -34,6 +34,11 @@ public class ScoreboardController {
         return scoreboardContainerService.getScoreboardItem(id);
     }
 
+    @GetMapping(value = "/scoreboard/user/{id}")
+    public List<ScoreboardItem> getScoreboardItemsByUserId(@PathVariable("id") int id) {
+        return scoreboardContainerService.getScoreboardItemsByUserId(id);
+    }
+
     @PutMapping(value = "/scoreboard",
             headers = "Accept=application/json")
     public ResponseEntity<?> updateScoreBoardItem(@RequestBody ScoreboardItem scoreboardItem) {
@@ -43,7 +48,7 @@ public class ScoreboardController {
 
     @PostMapping(value = "/scoreboard",
             headers = "Accept=application/json")
-    public ResponseEntity<?> addAccount(@RequestBody ScoreboardItem scoreboardItem, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> addScoreboardItem(@RequestBody ScoreboardItem scoreboardItem, UriComponentsBuilder ucBuilder) {
         scoreboardContainerService.addScoreboardItem(scoreboardItem);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/scoreboard/{id}").buildAndExpand(scoreboardItem.getId()).toUri());

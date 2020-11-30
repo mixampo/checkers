@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface ScoreboardContainerService {
     List<ScoreboardItem> getScoreboard();
+    List<ScoreboardItem> getScoreboardItemsByUserId(int id);
     Optional<ScoreboardItem> getScoreboardItem(int id);
     void addScoreboardItem(ScoreboardItem scoreboardItem);
     void deleteScoreboardItem(int id);

@@ -1,5 +1,6 @@
 package models;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,10 +21,13 @@ public class ScoreboardItem {
     @JoinColumn
     private User user;
 
+    @NotNull
     private int score;
 
+    @NotNull
     private LocalDate date;
 
+    @NotNull
     private boolean win;
 
     public ScoreboardItem(User user, int score, LocalDate date, boolean win) {

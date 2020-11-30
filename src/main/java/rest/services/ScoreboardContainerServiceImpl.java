@@ -20,6 +20,11 @@ public class ScoreboardContainerServiceImpl implements ScoreboardContainerServic
     }
 
     @Override
+    public List<ScoreboardItem> getScoreboardItemsByUserId(int id) {
+        return scoreboardJpaRepository.findAllByUserId(id);
+    }
+
+    @Override
     public Optional<ScoreboardItem> getScoreboardItem(int id) {
         return scoreboardJpaRepository.findById(id);
     }

@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping(value = "/user",
             headers = "Accept=application/json")
-    public ResponseEntity<?> addAccount(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> addUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         if (userContainerService.addUser(user)) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(ucBuilder.path("/account/{id}").buildAndExpand(user.getId()).toUri());
@@ -35,17 +35,17 @@ public class UserController {
 
     @PutMapping(value = "/user",
             headers = "Accept=application/json")
-    public ResponseEntity<?> updateAccount(@RequestBody User user) {
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
         userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/user")
-    public List<User> getAccounts() {
+    public List<User> getUser() {
         return userContainerService.getUsers();
     }
 
-    @GetMapping(value = "/account/{id}")
+    @GetMapping(value = "/user/{id}")
     public Optional<User> getUser(@PathVariable("id") int id) {
         return userContainerService.getUser(id);
     }
