@@ -2,6 +2,8 @@ package models;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import com.sun.istack.NotNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @ToString
+@Getter
+@Setter
 public class ScoreboardItem {
 
     @Id
@@ -19,10 +23,12 @@ public class ScoreboardItem {
     @JoinColumn
     private User user;
 
+    @NotNull
     private int score;
 
     private LocalDate date;
 
+    @NotNull
     private boolean win;
 
     public ScoreboardItem(User user, int score, LocalDate date, boolean win) {
