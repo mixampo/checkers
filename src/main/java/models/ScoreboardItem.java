@@ -26,6 +26,7 @@ public class ScoreboardItem {
     @NotNull
     private int score;
 
+    @NotNull
     private LocalDate date;
 
     @NotNull
