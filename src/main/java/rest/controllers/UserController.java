@@ -47,7 +47,7 @@ public class UserController {
         return userContainerService.getUsers();
     }
 
-    @GetMapping(value = "/account/{id}")
+    @GetMapping(value = "/user/{id}")
     public Optional<User> getUser(@PathVariable int id) {
         return userContainerService.getUser(id);
     }
