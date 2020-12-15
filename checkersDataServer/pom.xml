@@ -163,12 +163,12 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <!--            <properties>-->
-            <!--                &lt;!&ndash; Optional URL to server. Default value is http://localhost:9000 &ndash;&gt;-->
-            <!--                <sonar.host.url>-->
-            <!--                    https://sonar.beekmans.dev-->
-            <!--                </sonar.host.url>-->
-            <!--            </properties>-->
+            <properties>
+                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url>
+                    https://sonar.beekmans.dev
+                </sonar.host.url>
+            </properties>
         </profile>
         <profile>
             <id>dev</id>
