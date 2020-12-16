@@ -9,9 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>checkersDataServer</artifactId>
+    <packaging>war</packaging>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
     </properties>
     <dependencies>
@@ -48,11 +47,6 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.21</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -148,7 +142,6 @@
             <version>5.4.1</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -164,7 +157,6 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!-- Optional URL to server. Default value is http://localhost:9000 -->
                 <sonar.host.url>
                     https://sonar.beekmans.dev
                 </sonar.host.url>
