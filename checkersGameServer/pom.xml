@@ -88,4 +88,32 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.host.url>
+                    https://sonar.beekmans.dev
+                </sonar.host.url>
+            </properties>
+        </profile>
+        <!--        <profile>-->
+        <!--            <id>dev</id>-->
+        <!--            <properties>-->
+        <!--                <activatedProperties>dev</activatedProperties>-->
+        <!--            </properties>-->
+        <!--            <activation>-->
+        <!--                <activeByDefault>true</activeByDefault>-->
+        <!--            </activation>-->
+        <!--        </profile>-->
+        <!--        <profile>-->
+        <!--            <id>prod</id>-->
+        <!--            <properties>-->
+        <!--                <activatedProperties>prod</activatedProperties>-->
+        <!--            </properties>-->
+        <!--        </profile>-->
+    </profiles>
 </project>
