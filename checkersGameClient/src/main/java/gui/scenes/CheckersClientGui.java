@@ -27,7 +27,7 @@ public class CheckersClientGui extends Application {
     @Override
     public void start(Stage primaryStage) {
         Scene scene = new Scene(createContent());
-        primaryStage.setTitle("Checkers");
+        primaryStage.setTitle("Checkers - Game");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

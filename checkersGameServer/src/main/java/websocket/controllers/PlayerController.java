@@ -1,12 +1,10 @@
 package websocket.controllers;
 
-import models.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.util.HtmlUtils;
 
 @Controller
 public class PlayerController {
@@ -20,14 +18,13 @@ public class PlayerController {
 
     @MessageMapping("/notify-ready")
     @SendTo("/game/checkers")
-    public void notifyReady(String test) {
+    public void notifyReady() {
 
     }
 
     @MessageMapping("/move-piece")
     @SendTo("/game/checkers")
-    public Player movePiece(String test) {
-        return new Player("Hello, " + HtmlUtils.htmlEscape(test) + "!");
+    public void movePiece() {
     }
 
     @MessageMapping("/move-dam")
@@ -59,6 +56,4 @@ public class PlayerController {
     public void startNewGame() {
 
     }
-
-
 }
