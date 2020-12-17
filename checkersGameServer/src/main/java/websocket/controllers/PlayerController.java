@@ -5,6 +5,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import shared.PostMessage;
 
 @Controller
 public class PlayerController {
@@ -14,6 +15,13 @@ public class PlayerController {
     @Autowired
     public PlayerController(SimpMessagingTemplate websocket) {
         this.websocket = websocket;
+    }
+
+    @MessageMapping("/test")
+    @SendTo("/game/checkers")
+    public PostMessage test(String test) {
+        String msg = "Shit works ayyy: " + test;
+        return new PostMessage(msg);
     }
 
     @MessageMapping("/notify-ready")
