@@ -8,6 +8,7 @@ import gui.service.IApiCallService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import models.User;
 
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class LoginScreenController implements Initializable {
     public Button btnLogin;
     public CheckBox cbRegistration;
     public Button btnSwitchToRegister;
+    private User user;
 
     private IApiCallService apiCallService = new ApiCallService();
     private ISceneSwitcher sceneSwitcher = new SceneSwitcher();
@@ -30,8 +32,14 @@ public class LoginScreenController implements Initializable {
 
     public void login(ActionEvent actionEvent) {
         if (!txtUsername.getText().isEmpty() && !txtPassword.getText().isEmpty()) {
-            if (apiCallService.login(txtUsername.getText(), txtPassword.getText()) != null) {
+            user = apiCallService.login(txtUsername.getText(), txtPassword.getText());
+            if (user != null) {
+
+                //TODO show mainscreen after login success
+
                 CheckersClientGui.main(null);
+
+
             } else {
                 update();
                 sceneSwitcher.showAlert("Wrong credentials", null, "Invalid username/password supplied");
