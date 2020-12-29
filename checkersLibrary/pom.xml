@@ -8,14 +8,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>checkersLibrary</artifactId>
-
+    <packaging>war</packaging>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <java.version>11</java.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -28,5 +25,32 @@
             <version>2.11.2</version>
         </dependency>
     </dependencies>
-
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.host.url>
+                    https://sonar.beekmans.dev
+                </sonar.host.url>
+            </properties>
+        </profile>
+        <!--        <profile>-->
+        <!--            <id>dev</id>-->
+        <!--            <properties>-->
+        <!--                <activatedProperties>dev</activatedProperties>-->
+        <!--            </properties>-->
+        <!--            <activation>-->
+        <!--                <activeByDefault>true</activeByDefault>-->
+        <!--            </activation>-->
+        <!--        </profile>-->
+        <!--        <profile>-->
+        <!--            <id>prod</id>-->
+        <!--            <properties>-->
+        <!--                <activatedProperties>prod</activatedProperties>-->
+        <!--            </properties>-->
+        <!--        </profile>-->
+    </profiles>
 </project>
