@@ -13,6 +13,7 @@
         <module>checkersGameServer</module>
         <module>checkersDataServer</module>
         <module>checkersGameClient</module>
+        <module>checkersLibrary</module>
     </modules>
     <groupId>org.se3</groupId>
     <artifactId>checkers</artifactId>

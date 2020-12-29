@@ -1,24 +1,35 @@
 package gui.scenes;
 
+import checkersGame.ICheckersGUI;
 import gui.models.*;
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
-public class CheckersClientGui extends Application {
+public class CheckersClientGui extends Application implements ICheckersGUI {
 
     public static final int BOX_SIZE = 100;
     public static final int WIDTH = 10;
     public static final int HEIGHT = 10;
 
+    //Buttons
+    private final int BUTTONWIDTH = 180; // Width of button
+
     private Box[][] board = new Box[WIDTH][HEIGHT];
 
     private Group boxGroup = new Group();
     private Group pieceGroup = new Group();
+
+    //Buttons
+    private Button btnReadyToPlay;
 
     public static void main(String[] args) {
         launch(args);
@@ -34,7 +45,7 @@ public class CheckersClientGui extends Application {
 
     private Parent createContent() {
         Pane root = new Pane();
-        root.setPrefSize(WIDTH * BOX_SIZE, HEIGHT * BOX_SIZE);
+        root.setPrefSize(WIDTH * BOX_SIZE, (HEIGHT + 1) * BOX_SIZE);
         root.getChildren().addAll(boxGroup, pieceGroup);
 
         for (int y = 0; y < HEIGHT; y++) {
@@ -131,5 +142,35 @@ public class CheckersClientGui extends Application {
         });
 
         return piece;
+    }
+
+    @Override
+    public void notifyStartGame(int playerNumber) {
+
+    }
+
+    @Override
+    public void setPlayerNumber(int playerNumber, String username) {
+
+    }
+
+    @Override
+    public void setPlayerTurn(int playerNumber) {
+
+    }
+
+    @Override
+    public void showErrorMessage(int playerNr, String errorMessage) {
+
+    }
+
+    @Override
+    public void setOpponentName(int playerNr, String name) {
+
+    }
+
+    @Override
+    public void showWinner(int playerNumber) {
+
     }
 }

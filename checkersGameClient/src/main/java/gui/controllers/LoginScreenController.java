@@ -3,15 +3,16 @@ package gui.controllers;
 import gui.scenes.CheckersClientGui;
 import gui.shared.ISceneSwitcher;
 import gui.shared.SceneSwitcher;
-import gui.service.ApiCallService;
-import gui.service.IApiCallService;
+import service.ApiCallService;
+import service.IApiCallService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import models.User;
 
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -21,7 +22,7 @@ public class LoginScreenController implements Initializable {
     public Button btnLogin;
     public CheckBox cbRegistration;
     public Button btnSwitchToRegister;
-    private User user;
+    public static User user;
 
     private IApiCallService apiCallService = new ApiCallService();
     private ISceneSwitcher sceneSwitcher = new SceneSwitcher();
@@ -34,12 +35,9 @@ public class LoginScreenController implements Initializable {
         if (!txtUsername.getText().isEmpty() && !txtPassword.getText().isEmpty()) {
             user = apiCallService.login(txtUsername.getText(), txtPassword.getText());
             if (user != null) {
-
-                //TODO show mainscreen after login success
-
-                CheckersClientGui.main(null);
-
-
+                Stage stage = (Stage) btnLogin.getScene().getWindow();
+                stage.close();
+                Platform.runLater(() -> new CheckersClientGui().start(new Stage()));
             } else {
                 update();
                 sceneSwitcher.showAlert("Wrong credentials", null, "Invalid username/password supplied");

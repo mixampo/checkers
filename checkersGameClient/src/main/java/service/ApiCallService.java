@@ -1,4 +1,4 @@
-package gui.service;
+package service;
 
 import com.google.gson.Gson;
 import models.User;

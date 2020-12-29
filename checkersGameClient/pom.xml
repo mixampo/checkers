@@ -135,6 +135,12 @@
             <artifactId>javafx-swing</artifactId>
             <version>12</version>
         </dependency>
+        <dependency>
+            <artifactId>checkersLibrary</artifactId>
+            <groupId>org.se3</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

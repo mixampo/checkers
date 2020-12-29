@@ -1,7 +1,7 @@
 package gui.controllers;
 
-import gui.service.ApiCallService;
-import gui.service.IApiCallService;
+import service.ApiCallService;
+import service.IApiCallService;
 import gui.shared.ISceneSwitcher;
 import gui.shared.SceneSwitcher;
 import javafx.event.ActionEvent;
