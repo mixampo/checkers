@@ -65,6 +65,9 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        //To show alerts
+        sceneSwitcher = new SceneSwitcher();
+
         //Register the player to open a websocket connection
         try {
             registerPlayer();
@@ -105,6 +108,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     private MoveResult tryMove(Piece piece, int newX, int newY) {
+        notifyReady();
         if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
             return new MoveResult(MoveType.NONE);
         }
@@ -194,7 +198,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void notifyStartGame(int playerNumber) {
-        sceneSwitcher.showAlert("Checkers", "Game has started!", ("Player turn: " + playerTurn));
+        sceneSwitcher.showAlert("Checkers", "Game has started!", ("Player with player number: " + playerTurn + " has the beginning turn"));
     }
 
     @Override
@@ -203,7 +207,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             return;
         }
         this.playerNumber = playerNumber;
-        sceneSwitcher.showAlert("Join game", ("Message for Player with playerNumber: " + playerNumber), (username + " Has joined the game"));
+        sceneSwitcher.showAlert("Join game", (username + " has joined the game") , ("Message for Player with playerNumber: " + playerNumber));
     }
 
     @Override
