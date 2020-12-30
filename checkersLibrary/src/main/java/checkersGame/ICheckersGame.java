@@ -1,7 +1,9 @@
 package checkersGame;
 
+import models.User;
+
 public interface ICheckersGame {
-    void registerPlayer(String name, ICheckersGUI application);
+    void registerPlayer(User user, ICheckersGUI application);
     void notifyReady(int playerNumber);
     void movePiece();
     void moveDam();

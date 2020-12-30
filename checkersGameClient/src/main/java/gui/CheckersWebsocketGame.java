@@ -1,3 +1,5 @@
+package gui;
+
 import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -6,6 +8,7 @@ import communication.GameMessage;
 import communication.MessageTypes;
 import communication.dto.PlayerAction;
 import communication.dto.RegisteredPlayer;
+import models.User;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -100,19 +103,19 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
     }
 
     @Override
-    public void registerPlayer(String name, ICheckersGUI application) {
+    public void registerPlayer(User user, ICheckersGUI application) {
         WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
         MappingJackson2MessageConverter mc = new MappingJackson2MessageConverter();
         mc.setObjectMapper(new ObjectMapper());
         stompClient.setMessageConverter(mc);
-        ListenableFuture<StompSession> session = stompClient.connect("ws://{host}:{port}/websocket", headers, this, "localhost", 8082);
+        ListenableFuture<StompSession> session = stompClient.connect("ws://{host}:{port}/start", headers, this, "localhost", 9090);
         try {
             this.session = session.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        this.player = new RegisteredPlayer(name, -1);
-        this.session.send("/action/join-game", name);
+        this.player = new RegisteredPlayer(user.getUsername(), -1);
+        this.session.send("/action/join-game", user.getUsername());
         this.application = application;
     }
 

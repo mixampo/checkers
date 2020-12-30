@@ -34,6 +34,7 @@ public class LoginScreenController implements Initializable {
     public void login(ActionEvent actionEvent) {
         if (!txtUsername.getText().isEmpty() && !txtPassword.getText().isEmpty()) {
             user = apiCallService.login(txtUsername.getText(), txtPassword.getText());
+            System.out.println(user);
             if (user != null) {
                 Stage stage = (Stage) btnLogin.getScene().getWindow();
                 stage.close();

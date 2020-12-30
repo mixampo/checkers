@@ -9,6 +9,7 @@ import communication.GameMessage;
 import communication.MessageTypes;
 import communication.dto.PlayerAction;
 import communication.dto.RegisteredPlayer;
+import models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -73,8 +74,8 @@ public class PlayerController implements ICheckersGUI {
 
     @MessageMapping("/join-game")
     @SendTo("/game/checkers")
-    public void registerPlayer(String username) {
-        game.registerPlayer(username, this);
+    public void registerPlayer(User user) {
+        game.registerPlayer(user, this);
     }
 
     @MessageMapping("/notify-ready")

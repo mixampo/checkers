@@ -1,15 +1,16 @@
 package gui.scenes;
 
 import checkersGame.ICheckersGUI;
+import checkersGame.ICheckersGame;
+import checkersGame.SingleCheckersGame;
+import checkersGame.exceptions.CheckersGameFullException;
+import gui.CheckersWebsocketGame;
 import gui.models.*;
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -31,6 +32,10 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     //Buttons
     private Button btnReadyToPlay;
 
+    //Multiplayer will be standard in this version of the game
+    private boolean singlePlayermode = false;
+    private ICheckersGame game;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -41,6 +46,13 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         primaryStage.setTitle("Checkers - Game");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        //Register the player to open a websocket connection
+        try {
+            this.registerPlayer();
+        } catch (CheckersGameFullException e) {
+            e.printStackTrace();
+        }
     }
 
     private Parent createContent() {
@@ -142,6 +154,17 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         });
 
         return piece;
+    }
+
+    private void registerPlayer() throws CheckersGameFullException {
+        if (!singlePlayermode) {
+            game = new CheckersWebsocketGame();
+        } else {
+            game = new SingleCheckersGame();
+        }
+
+        //TODO get name from logged in user
+//        game.registerPlayer("henk", this);
     }
 
     @Override
