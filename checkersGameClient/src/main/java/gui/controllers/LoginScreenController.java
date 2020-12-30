@@ -22,7 +22,7 @@ public class LoginScreenController implements Initializable {
     public Button btnLogin;
     public CheckBox cbRegistration;
     public Button btnSwitchToRegister;
-    public static User user;
+    public User user;
 
     private IApiCallService apiCallService = new ApiCallService();
     private ISceneSwitcher sceneSwitcher = new SceneSwitcher();
@@ -34,11 +34,11 @@ public class LoginScreenController implements Initializable {
     public void login(ActionEvent actionEvent) {
         if (!txtUsername.getText().isEmpty() && !txtPassword.getText().isEmpty()) {
             user = apiCallService.login(txtUsername.getText(), txtPassword.getText());
-            System.out.println(user);
             if (user != null) {
                 Stage stage = (Stage) btnLogin.getScene().getWindow();
                 stage.close();
-                Platform.runLater(() -> new CheckersClientGui().start(new Stage()));
+                CheckersClientGui gui = new CheckersClientGui(this.user);
+                Platform.runLater(() -> gui.start(new Stage()));
             } else {
                 update();
                 sceneSwitcher.showAlert("Wrong credentials", null, "Invalid username/password supplied");

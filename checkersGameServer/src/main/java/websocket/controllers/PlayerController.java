@@ -3,6 +3,7 @@ package websocket.controllers;
 import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import checkersGame.MultiCheckersGame;
+import checkersGame.exceptions.NotPlayersTurnException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import communication.GameMessage;
@@ -81,7 +82,11 @@ public class PlayerController implements ICheckersGUI {
     @MessageMapping("/notify-ready")
     @SendTo("/game/checkers")
     public void notifyReadyToPlay(PlayerAction action) {
-        game.notifyReady(action.getPlayerNr());
+        try {
+            game.notifyReady(action.getPlayerNr());
+        } catch (NotPlayersTurnException e) {
+            e.printStackTrace();
+        }
     }
 
     @MessageMapping("/move-piece")

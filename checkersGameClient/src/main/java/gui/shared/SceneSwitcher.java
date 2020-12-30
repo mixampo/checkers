@@ -1,5 +1,6 @@
 package gui.shared;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,8 +12,6 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class SceneSwitcher implements ISceneSwitcher {
-
-    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
     public void switchScene(String location, String title, ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
@@ -32,10 +31,17 @@ public class SceneSwitcher implements ISceneSwitcher {
     }
 
     public void showAlert(String title, String header, String contentText) {
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(contentText);
 
-        alert.showAndWait();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle(title);
+                alert.setHeaderText(header);
+                alert.setContentText(contentText);
+
+                alert.showAndWait();
+            }
+        });
     }
 }

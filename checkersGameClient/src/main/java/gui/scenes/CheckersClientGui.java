@@ -4,8 +4,10 @@ import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import checkersGame.SingleCheckersGame;
 import checkersGame.exceptions.CheckersGameFullException;
+import checkersGame.exceptions.NotPlayersTurnException;
 import gui.CheckersWebsocketGame;
 import gui.models.*;
+import gui.shared.SceneSwitcher;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -13,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import models.User;
 
 
 public class CheckersClientGui extends Application implements ICheckersGUI {
@@ -34,10 +37,25 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     //Multiplayer will be standard in this version of the game
     private boolean singlePlayermode = false;
+
     private ICheckersGame game;
+    private User loggedInUser;
+
+    int playerNumber = 0;
+    private int playerTurn = 0;
+
+    private SceneSwitcher sceneSwitcher;
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public CheckersClientGui(User user) {
+        this.loggedInUser = user;
+    }
+
+    public CheckersClientGui() {
+
     }
 
     @Override
@@ -49,7 +67,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
         //Register the player to open a websocket connection
         try {
-            this.registerPlayer();
+            registerPlayer();
         } catch (CheckersGameFullException e) {
             e.printStackTrace();
         }
@@ -110,7 +128,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     private int toBoard(double pixel) {
-        return (int)(pixel + BOX_SIZE / 2) / BOX_SIZE;
+        return (int) (pixel + BOX_SIZE / 2) / BOX_SIZE;
     }
 
 
@@ -162,19 +180,30 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         } else {
             game = new SingleCheckersGame();
         }
+        game.registerPlayer(this.loggedInUser, this);
+    }
 
-        //TODO get name from logged in user
-//        game.registerPlayer("henk", this);
+    private void notifyReady() {
+        try {
+            game.notifyReady(playerNumber);
+        } catch (NotPlayersTurnException e) {
+            showErrorMessage(playerNumber, "Wait for the other player to ready up");
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void notifyStartGame(int playerNumber) {
-
+        sceneSwitcher.showAlert("Checkers", "Game has started!", ("Player turn: " + playerTurn));
     }
 
     @Override
     public void setPlayerNumber(int playerNumber, String username) {
-
+        if (!this.loggedInUser.getUsername().equals(username)) {
+            return;
+        }
+        this.playerNumber = playerNumber;
+        sceneSwitcher.showAlert("Join game", ("Message for Player with playerNumber: " + playerNumber), (username + " Has joined the game"));
     }
 
     @Override
@@ -183,12 +212,12 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     @Override
-    public void showErrorMessage(int playerNr, String errorMessage) {
-
+    public void showErrorMessage(int playerNumber, String errorMessage) {
+        sceneSwitcher.showAlert("Error", ("Error for player with playerNumber: " + playerNumber), errorMessage);
     }
 
     @Override
-    public void setOpponentName(int playerNr, String name) {
+    public void setOpponentName(int playerNumber, String name) {
 
     }
 

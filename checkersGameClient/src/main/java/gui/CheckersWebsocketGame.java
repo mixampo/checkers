@@ -2,6 +2,7 @@ package gui;
 
 import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
+import checkersGame.exceptions.NotPlayersTurnException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import communication.GameMessage;
@@ -98,7 +99,7 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
     }
 
     @Override
-    public void notifyReady(int playerNumber) {
+    public void notifyReady(int playerNumber) throws NotPlayersTurnException  {
         this.session.send("/action/notify-ready", new PlayerAction(playerNumber));
     }
 
@@ -115,7 +116,7 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
             e.printStackTrace();
         }
         this.player = new RegisteredPlayer(user.getUsername(), -1);
-        this.session.send("/action/join-game", user.getUsername());
+        this.session.send("/action/join-game", user);
         this.application = application;
     }
 

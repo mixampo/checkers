@@ -26,7 +26,6 @@ public class ApiCallService implements IApiCallService {
         try {
             ResponseEntity<String> out = restTemplate.exchange((uri + "/user"), HttpMethod.POST, entity, String.class);
             return true;
-
         } catch (HttpClientErrorException e) {
             e.printStackTrace();
             return false;
@@ -50,7 +49,6 @@ public class ApiCallService implements IApiCallService {
             user.setJwt(g.fromJson(jso.get("token").toString(), String.class));
 
             return user;
-
         } catch (HttpClientErrorException | ParseException e) {
             e.printStackTrace();
             return null;

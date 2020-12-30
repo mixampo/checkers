@@ -11,8 +11,8 @@ public abstract class CheckersGame implements ICheckersGame {
 
     @Override
     public void notifyReady(int playerNumber) {
-        CheckersPlayer seabattlePlayer = checkersPlayers[playerNumber];
-        seabattlePlayer.readyUp();
+        CheckersPlayer checkersPlayer = checkersPlayers[playerNumber];
+        checkersPlayer.readyUp();
         if (checkersPlayers[1-playerNumber] != null && checkersPlayers[1 - playerNumber].getReady()) {
             player_turn = 1;
             application.notifyStartGame(player_turn);
