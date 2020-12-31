@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="775.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.HomeScreenController">
+    <children>
+        <Label fx:id="lblName" layoutX="21.0" layoutY="14.0" prefHeight="45.0" prefWidth="107.0">
+            <font>
+                <Font size="23.0" />
+            </font></Label>
+      <Button fx:id="btnJoinGame" layoutX="21.0" layoutY="151.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="45.0" prefWidth="172.0" text="Join game" />
+      <Button fx:id="btnReadyUp" layoutX="21.0" layoutY="350.0" mnemonicParsing="false" onAction="#notifyReady" prefHeight="45.0" prefWidth="172.0" text="Ready up" />
+      <TableView fx:id="tvScoreboard" layoutX="254.0" layoutY="81.0" prefHeight="613.0" prefWidth="471.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="99.0" text="Id" />
+          <TableColumn fx:id="username" prefWidth="89.0" text="Username" />
+            <TableColumn fx:id="score" prefWidth="95.0" text="Score" />
+            <TableColumn fx:id="date" prefWidth="93.0" text="Date" />
+            <TableColumn fx:id="win" prefWidth="93.0" text="Win" />
+        </columns>
+      </TableView>
+      <Label layoutX="422.0" layoutY="14.0" prefHeight="45.0" prefWidth="135.0" text="Scoreboard">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnExitApplication" layoutX="21.0" layoutY="707.0" mnemonicParsing="false" onAction="#exitApplication" prefHeight="45.0" prefWidth="172.0" text="Exit application" />
+      <Button fx:id="btnRefreshScoreboard" layoutX="553.0" layoutY="707.0" mnemonicParsing="false" onAction="#refreshScoreboard" prefHeight="45.0" prefWidth="172.0" text="Refresh scoreboard" />
+      <Button fx:id="btnLogout" layoutX="21.0" layoutY="630.0" mnemonicParsing="false" onAction="#logout" prefHeight="45.0" prefWidth="172.0" text="logout" />
+      <ChoiceBox fx:id="cbGameMode" layoutX="21.0" layoutY="81.0" prefHeight="30.0" prefWidth="172.0" />
+    </children>
+</AnchorPane>

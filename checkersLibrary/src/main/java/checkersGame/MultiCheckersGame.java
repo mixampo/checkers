@@ -35,7 +35,13 @@ public class MultiCheckersGame extends CheckersGame {
             throw new NotPlayersTurnException();
         }
 
-        //TODO add logic
+        updateBoard(playerNumber);
+
+        if (checkersPlayers[1 - playerNumber].allHit()) {
+            application.showErrorMessage(playerNumber, "Winner");
+            application.showWinner(playerNumber);
+            application.showErrorMessage(playerNumber, checkersPlayers[playerNumber].getName() + " has won the game");
+        }
 
         player_turn = 1 - playerNumber;
         application.setPlayerTurn(player_turn);

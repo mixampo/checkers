@@ -82,7 +82,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     private Parent createContent() {
         Pane root = new Pane();
-        root.setPrefSize(WIDTH * BOX_SIZE, (HEIGHT + 1) * BOX_SIZE);
+        root.setPrefSize(WIDTH * BOX_SIZE, HEIGHT * BOX_SIZE);
         root.getChildren().addAll(boxGroup, pieceGroup);
 
         for (int y = 0; y < HEIGHT; y++) {
@@ -94,12 +94,12 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
                 Piece piece = null;
 
-                if (y <= 2 && (x + y) % 2 != 0) {
+                if (y <= 3 && (x + y) % 2 != 0) {
                     piece = makePiece(PieceType.RED, x, y);
                 }
 
-                if (y >= 5 && (x + y) % 2 != 0) {
-                    piece = makePiece(PieceType.BLUE, x, y);
+                if (y >= 6 && (x + y) % 2 != 0) {
+                    piece = makePiece(PieceType.WHITE, x, y);
                 }
 
                 if (piece != null) {
@@ -124,8 +124,6 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             sceneSwitcher.showAlert("Checkers - error", "Not your turn!", "");
         }
 
-        //TODO add ready up button to GUI
-        notifyReady();
 
 
         if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
@@ -143,7 +141,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             int y1 = y0 + (newY - y0) / 2;
 
             if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != piece.getType()) {
-                return new MoveResult(MoveType.KILL, board[x1][y1].getPiece());
+                return new MoveResult(MoveType.HIT, board[x1][y1].getPiece());
             }
         }
 
@@ -182,7 +180,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
                     board[x0][y0].setPiece(null);
                     board[newX][newY].setPiece(piece);
                     break;
-                case KILL:
+                case HIT:
                     piece.move(newX, newY);
                     board[x0][y0].setPiece(null);
                     board[newX][newY].setPiece(piece);
