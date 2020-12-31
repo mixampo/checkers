@@ -73,11 +73,14 @@ public class HomeScreenController implements Initializable {
     }
 
     public void exitApplication(ActionEvent actionEvent) {
+        Platform.exit();
     }
 
     public void refreshScoreboard(ActionEvent actionEvent) {
     }
 
     public void logout(ActionEvent actionEvent) {
+        loggedInUser = null;
+        sceneSwitcher.switchScene("fxml/LoginScreen.fxml", "Checkers - Login", actionEvent);
     }
 }
