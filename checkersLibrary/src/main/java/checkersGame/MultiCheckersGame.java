@@ -1,5 +1,8 @@
 package checkersGame;
 
+import checkersGame.exceptions.InvalidBoxException;
+import checkersGame.exceptions.NotPlayersTurnException;
+import models.Box;
 import models.CheckersPlayer;
 import models.User;
 
@@ -24,5 +27,17 @@ public class MultiCheckersGame extends CheckersGame {
             this.application.setPlayerNumber(1, user.getUsername());
         }
 
+    }
+
+    @Override
+    public void movePiece(int playerNumber, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException {
+        if (player_turn != playerNumber) {
+            throw new NotPlayersTurnException();
+        }
+
+        //TODO add logic
+
+        player_turn = 1 - playerNumber;
+        application.setPlayerTurn(player_turn);
     }
 }

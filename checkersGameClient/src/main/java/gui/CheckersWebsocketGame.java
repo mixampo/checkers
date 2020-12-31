@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import communication.GameMessage;
 import communication.MessageTypes;
 import communication.dto.PlayerAction;
+import communication.dto.PositionAction;
 import communication.dto.RegisteredPlayer;
 import models.User;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -121,13 +122,12 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
     }
 
     @Override
-    public void movePiece() {
-
+    public void movePiece(int playerNumber, int newX, int newY) {
+        this.session.send("/action/move-piece", new PositionAction(playerNumber, newX, newY));
     }
 
     @Override
     public void moveDam() {
-
     }
 
     @Override
@@ -146,7 +146,7 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
     }
 
     @Override
-    public void startNewGame() {
-
+    public void startNewGame(int playerNumber) {
+        this.session.send("/action/start-new", new PlayerAction(playerNumber));
     }
 }

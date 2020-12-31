@@ -5,6 +5,8 @@ public class MessageTypes {
     public static final String REGISTERED = "REGISTERED_PLAYER";
     public static final String REGISTERED_OPPONENT = "REGISTERED_OPPONENT";
     public static final String ERROR = "ERROR";
+    public static final String SHOW_PIECE_PLAYER = "SHOW_PIECE_PLAYER";
+    public static final String SHOW_PIECE_OPPONENT = "SHOW_PIECE_OPPONENT";
 
     public static final String SET_PLAYER_TURN = "SET_PLAYER_TURN";
     public static final String NOTIFY_READY = "NOTIFY_READY";

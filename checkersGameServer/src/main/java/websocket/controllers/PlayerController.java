@@ -3,12 +3,14 @@ package websocket.controllers;
 import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import checkersGame.MultiCheckersGame;
+import checkersGame.exceptions.InvalidBoxException;
 import checkersGame.exceptions.NotPlayersTurnException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import communication.GameMessage;
 import communication.MessageTypes;
 import communication.dto.PlayerAction;
+import communication.dto.PositionAction;
 import communication.dto.RegisteredPlayer;
 import models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +93,8 @@ public class PlayerController implements ICheckersGUI {
 
     @MessageMapping("/move-piece")
     @SendTo("/game/checkers")
-    public void movePiece() {
+    public void movePiece(PositionAction action) throws InvalidBoxException, NotPlayersTurnException {
+        game.movePiece(action.getPlayerNr(), action.getPosX(), action.getPosY());
     }
 
     @MessageMapping("/move-dam")

@@ -21,11 +21,6 @@ public abstract class CheckersGame implements ICheckersGame {
     }
 
     @Override
-    public void movePiece() {
-
-    }
-
-    @Override
     public void moveDam() {
 
     }
@@ -46,7 +41,11 @@ public abstract class CheckersGame implements ICheckersGame {
     }
 
     @Override
-    public void startNewGame() {
+    public void startNewGame(int playerNumber) {
+
+    }
+
+    protected void updateBoard(int playerNumber) {
 
     }
 }

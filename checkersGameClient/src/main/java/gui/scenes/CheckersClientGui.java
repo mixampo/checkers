@@ -4,6 +4,7 @@ import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import checkersGame.SingleCheckersGame;
 import checkersGame.exceptions.CheckersGameFullException;
+import checkersGame.exceptions.InvalidBoxException;
 import checkersGame.exceptions.NotPlayersTurnException;
 import gui.CheckersWebsocketGame;
 import gui.models.*;
@@ -38,6 +39,9 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     //Multiplayer will be standard in this version of the game
     private boolean singlePlayermode = false;
 
+    // Opponent's name
+    private String opponentName;
+
     private ICheckersGame game;
     private User loggedInUser;
 
@@ -65,8 +69,8 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        //To show alerts
         sceneSwitcher = new SceneSwitcher();
+        opponentName = "Opponent";
 
         //Register the player to open a websocket connection
         try {
@@ -108,7 +112,22 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     private MoveResult tryMove(Piece piece, int newX, int newY) {
+
+        //TODO add piece for moving to new position over websocket?
+        //Call movepiece
+        try {
+            game.movePiece(playerNumber, newX, newY);
+        } catch (InvalidBoxException e) {
+            sceneSwitcher.showAlert("Checkers - error", "Invalid box, can't move piece to the new position", "");
+            e.printStackTrace();
+        } catch (NotPlayersTurnException e) {
+            sceneSwitcher.showAlert("Checkers - error", "Not your turn!", "");
+        }
+
+        //TODO add ready up button to GUI
         notifyReady();
+
+
         if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
             return new MoveResult(MoveType.NONE);
         }
@@ -212,7 +231,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void setPlayerTurn(int playerNumber) {
-
+        this.playerTurn = playerNumber;
     }
 
     @Override
@@ -222,7 +241,8 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void setOpponentName(int playerNumber, String name) {
-
+        sceneSwitcher.showAlert("Checkers", ("Your opponent is: " + name), "");
+        opponentName = name;
     }
 
     @Override
