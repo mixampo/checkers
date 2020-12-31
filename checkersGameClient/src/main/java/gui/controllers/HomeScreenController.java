@@ -1,9 +1,6 @@
 package gui.controllers;
 
 import checkersGame.ICheckersGame;
-import checkersGame.SingleCheckersGame;
-import checkersGame.exceptions.CheckersGameFullException;
-import gui.CheckersWebsocketGame;
 import gui.scenes.CheckersClientGui;
 import gui.shared.SceneSwitcher;
 import javafx.application.Platform;
@@ -51,7 +48,7 @@ public class HomeScreenController implements Initializable {
     public void joinGame(ActionEvent actionEvent) {
         if (!cbGameMode.getSelectionModel().isSelected(-1)) {
             if (cbGameMode.getValue().toString().equals("Multiplayer")) {
-
+                //TODO join multiplayer game
             } else {
                 //TODO add possibility to switch to singleplayer
             }
