@@ -247,4 +247,14 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     public void showWinner(int playerNumber) {
 
     }
+
+    @Override
+    public void showPiecePlayer(int playerNumber, int posX, int posY) {
+
+    }
+
+    @Override
+    public void showPieceOpponent(int playerNumber, int posX, int posY) {
+
+    }
 }

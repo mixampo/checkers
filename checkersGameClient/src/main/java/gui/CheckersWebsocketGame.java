@@ -10,6 +10,7 @@ import communication.MessageTypes;
 import communication.dto.PlayerAction;
 import communication.dto.PositionAction;
 import communication.dto.RegisteredPlayer;
+import communication.dto.ShowPiece;
 import models.Piece;
 import models.User;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -80,6 +81,24 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
+                break;
+            case (MessageTypes.SHOW_PIECE_PLAYER):
+                ShowPiece spp = null;
+                try {
+                    spp = mapper.readValue(gm.getMessageData(), ShowPiece.class);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                application.showPiecePlayer(gm.getPlayerNr(), spp.getPosX(), spp.getPosY());
+                break;
+            case (MessageTypes.SHOW_PIECE_OPPONENT):
+                ShowPiece spo = null;
+                try {
+                    spo = mapper.readValue(gm.getMessageData(), ShowPiece.class);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                application.showPieceOpponent(gm.getPlayerNr(), spo.getPosX(), spo.getPosY());
                 break;
             case (MessageTypes.NOTIFY_START):
                 application.notifyStartGame(gm.getPlayerNr());

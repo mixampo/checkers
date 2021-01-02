@@ -12,6 +12,7 @@ import communication.MessageTypes;
 import communication.dto.PlayerAction;
 import communication.dto.PositionAction;
 import communication.dto.RegisteredPlayer;
+import communication.dto.ShowPiece;
 import models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -72,6 +73,24 @@ public class PlayerController implements ICheckersGUI {
         this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.SHOW_WINNER, String.valueOf(playerNumber)));
         this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.SHOW_WINNER, String.valueOf(playerNumber)));
         this.game = new MultiCheckersGame();
+    }
+
+    @Override
+    public void showPiecePlayer(int playerNumber, int posX, int posY) {
+        try {
+            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.SHOW_PIECE_PLAYER, mapper.writeValueAsString(new ShowPiece(posX, posY))));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void showPieceOpponent(int playerNumber, int posX, int posY) {
+        try {
+            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.SHOW_PIECE_OPPONENT, mapper.writeValueAsString(new ShowPiece(posX, posY))));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
 
