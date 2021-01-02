@@ -10,6 +10,7 @@ import gui.CheckersWebsocketGame;
 import gui.models.*;
 import gui.shared.SceneSwitcher;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import models.User;
+import models.PieceType;
 
 
 public class CheckersClientGui extends Application implements ICheckersGUI {
@@ -90,21 +92,6 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
                 board[x][y] = tile;
 
                 boxGroup.getChildren().add(tile);
-
-                Piece piece = null;
-
-                if (y <= 3 && (x + y) % 2 != 0) {
-                    piece = makePiece(PieceType.RED, x, y);
-                }
-
-                if (y >= 6 && (x + y) % 2 != 0) {
-                    piece = makePiece(PieceType.WHITE, x, y);
-                }
-
-                if (piece != null) {
-                    tile.setPiece(piece);
-                    pieceGroup.getChildren().add(piece);
-                }
             }
         }
         return root;
@@ -113,26 +100,27 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     private MoveResult tryMove(Piece piece, int newX, int newY) {
         if (playingMode) {
             try {
-                game.movePiece(playerNumber, new models.Piece(piece.getOldX(), piece.getOldY()), newX, newY);
+                game.movePiece(playerNumber, new models.Piece(piece.getType(), piece.getOldX(), piece.getOldY()), newX, newY);
 
-                if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
-                    return new MoveResult(MoveType.NONE);
-                }
-
-                int x0 = toBoard(piece.getOldX());
-                int y0 = toBoard(piece.getOldY());
-
-                if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
-                    return new MoveResult(MoveType.NORMAL);
-                } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
-
-                    int x1 = x0 + (newX - x0) / 2;
-                    int y1 = y0 + (newY - y0) / 2;
-
-                    if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != piece.getType()) {
-                        return new MoveResult(MoveType.HIT, board[x1][y1].getPiece());
-                    }
-                }
+                //TODO continue moving this logic to MultiCheckersGame.java
+//                if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
+//                    return new MoveResult(MoveType.NONE);
+//                }
+//
+//                int x0 = toBoard(piece.getOldX());
+//                int y0 = toBoard(piece.getOldY());
+//
+//                if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
+//                    return new MoveResult(MoveType.NORMAL);
+//                } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
+//
+//                    int x1 = x0 + (newX - x0) / 2;
+//                    int y1 = y0 + (newY - y0) / 2;
+//
+//                    if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != piece.getType()) {
+//                        return new MoveResult(MoveType.HIT, board[x1][y1].getPiece());
+//                    }
+//                }
             } catch (InvalidBoxException e) {
                 sceneSwitcher.showAlert("Checkers - error", "Invalid box, can't move piece to the new position", "");
                 e.printStackTrace();
@@ -250,7 +238,23 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void showPiecePlayer(int playerNumber, int posX, int posY) {
+        Platform.runLater(() -> {
+            Piece piece = null;
+            Box tile = board[posX][posY];
 
+            if (posY <= 3 && (posX + posY) % 2 != 0) {
+                piece = makePiece(PieceType.RED, posX, posY);
+            }
+
+            if (posY >= 6 && (posX + posY) % 2 != 0) {
+                piece = makePiece(PieceType.WHITE, posX, posY);
+            }
+
+            if (piece != null) {
+                tile.setPiece(piece);
+                pieceGroup.getChildren().add(piece);
+            }
+        });
     }
 
     @Override

@@ -33,19 +33,32 @@ public class MultiCheckersGame extends CheckersGame {
             throw new NotPlayersTurnException();
         }
 
-        Box b = checkersPlayers[1 - playerNumber].getGameBoard().getBox(newX, newY);
+        Board gameBoard = checkersPlayers[playerNumber].getGameBoard();
+        Box b = gameBoard.getBox(newX, newY);
 
         if (b.getPiece() != null || (newX + newY) % 2 == 0) {
             throw new InvalidBoxException();
         }
 
-        int x0 = checkersPlayers[1 - playerNumber].getGameBoard().toBoard(piece.getOldX());
-        int y0 = checkersPlayers[1 - playerNumber].getGameBoard().toBoard(piece.getOldY());
+        int x0 = gameBoard.toBoard(piece.getOldX());
+        int y0 = gameBoard.toBoard(piece.getOldY());
 
-        //TODO continue for move piece
-//        if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
-//
-//        }
+        if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
+            
+            gameBoard.getBox(x0, y0).setPiece(null);
+            b.setPiece(piece);
+            piece.setPlace(b);
+
+            //TODO add hit movetype
+        } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
+
+            int x1 = x0 + (newX - x0) / 2;
+            int y1 = y0 + (newY - y0) / 2;
+
+            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
+
+            }
+        }
 
 
         if (checkersPlayers[1 - playerNumber].allHit()) {

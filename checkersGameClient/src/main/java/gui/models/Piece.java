@@ -3,6 +3,7 @@ package gui.models;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
+import models.PieceType;
 
 import static gui.scenes.CheckersClientGui.BOX_SIZE;
 

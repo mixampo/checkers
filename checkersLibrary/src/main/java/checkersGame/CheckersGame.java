@@ -1,5 +1,7 @@
 package checkersGame;
 
+import models.Board;
+import models.Box;
 import models.CheckersPlayer;
 
 public abstract class CheckersGame implements ICheckersGame {
@@ -14,6 +16,7 @@ public abstract class CheckersGame implements ICheckersGame {
         CheckersPlayer checkersPlayer = checkersPlayers[playerNumber];
         checkersPlayer.readyUp();
         checkersPlayer.placePieces();
+        updateBoard(playerNumber);
         if (checkersPlayers[1-playerNumber] != null && checkersPlayers[1 - playerNumber].getReady()) {
             player_turn = 1;
             application.notifyStartGame(player_turn);
@@ -47,6 +50,9 @@ public abstract class CheckersGame implements ICheckersGame {
     }
 
     protected void updateBoard(int playerNumber) {
-
+        Board gameBoard = checkersPlayers[playerNumber].getGameBoard();
+        for (Box b : gameBoard.getBoxes()) {
+            application.showPiecePlayer(playerNumber, b.getxCord(), b.getyCord());
+        }
     }
 }

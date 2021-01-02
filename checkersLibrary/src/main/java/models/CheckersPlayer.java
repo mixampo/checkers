@@ -107,7 +107,7 @@ public class CheckersPlayer {
 
     public void addAllPiecesToList() {
         for (int i = 0; i < 21; i++) {
-            pieces.add(new Piece(PieceType.NORMAL, this));
+            pieces.add(new Piece(this));
         }
     }
 

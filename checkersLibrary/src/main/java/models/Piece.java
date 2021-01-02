@@ -70,6 +70,16 @@ public class Piece {
         this.oldY = oldY;
     }
 
+    public Piece(PieceType type, double oldX, double oldY) {
+        this.type = type;
+        this.oldX = oldX;
+        this.oldY = oldY;
+    }
+
+    public Piece(CheckersPlayer player) {
+        this.player = player;
+    }
+
     public boolean isHit() {
         return place == null;
     }
