@@ -10,6 +10,7 @@ import communication.MessageTypes;
 import communication.dto.PlayerAction;
 import communication.dto.PositionAction;
 import communication.dto.RegisteredPlayer;
+import models.Piece;
 import models.User;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -122,8 +123,8 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
     }
 
     @Override
-    public void movePiece(int playerNumber, int newX, int newY) {
-        this.session.send("/action/move-piece", new PositionAction(playerNumber, newX, newY));
+    public void movePiece(int playerNumber, Piece piece, int newX, int newY) {
+        this.session.send("/action/move-piece", new PositionAction(playerNumber, piece, newX, newY));
     }
 
     @Override

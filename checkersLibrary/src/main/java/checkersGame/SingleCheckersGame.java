@@ -1,6 +1,7 @@
 package checkersGame;
 
 import checkersGame.exceptions.InvalidBoxException;
+import models.Piece;
 import models.User;
 
 public class SingleCheckersGame extends CheckersGame {
@@ -11,7 +12,7 @@ public class SingleCheckersGame extends CheckersGame {
     }
 
     @Override
-    public void movePiece(int playerNumber, int newX, int newY) throws InvalidBoxException {
+    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException {
 
     }
 }

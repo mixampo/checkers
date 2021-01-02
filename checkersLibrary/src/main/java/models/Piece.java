@@ -5,6 +5,7 @@ public class Piece {
     private Box place;
     private char color;
     private CheckersPlayer player;
+    private double oldX, oldY;
 
     public PieceType getType() {
         return type;
@@ -38,6 +39,14 @@ public class Piece {
         this.player = player;
     }
 
+    public double getOldX() {
+        return oldX;
+    }
+
+    public double getOldY() {
+        return oldY;
+    }
+
     public Piece(PieceType type, Box place, char color, CheckersPlayer player) {
         this.type = type;
         this.place = place;
@@ -54,6 +63,11 @@ public class Piece {
     public Piece(PieceType type, CheckersPlayer player) {
         this.type = type;
         this.player = player;
+    }
+
+    public Piece(double oldX, double oldY) {
+        this.oldX = oldX;
+        this.oldY = oldY;
     }
 
     public boolean isHit() {

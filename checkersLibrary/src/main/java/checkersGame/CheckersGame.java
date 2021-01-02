@@ -13,6 +13,7 @@ public abstract class CheckersGame implements ICheckersGame {
     public void notifyReady(int playerNumber) {
         CheckersPlayer checkersPlayer = checkersPlayers[playerNumber];
         checkersPlayer.readyUp();
+        checkersPlayer.placePieces();
         if (checkersPlayers[1-playerNumber] != null && checkersPlayers[1 - playerNumber].getReady()) {
             player_turn = 1;
             application.notifyStartGame(player_turn);

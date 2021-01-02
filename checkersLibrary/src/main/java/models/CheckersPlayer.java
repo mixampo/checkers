@@ -9,6 +9,7 @@ public class CheckersPlayer {
     private Boolean onTurn;
     private Boolean ready;
     private List<Piece> pieces;
+    private Board gameBoard;
 
     public String getName() {
         return name;
@@ -42,6 +43,31 @@ public class CheckersPlayer {
         this.ready = ready;
     }
 
+    public List<Piece> getPieces() {
+        return pieces;
+    }
+
+    public void setPieces(List<Piece> pieces) {
+        this.pieces = pieces;
+    }
+
+    public Board getGameBoard() {
+        return gameBoard;
+    }
+
+    public void setGameBoard(Board gameBoard) {
+        this.gameBoard = gameBoard;
+    }
+
+    public CheckersPlayer(String name, int playerNr, Boolean onTurn, Boolean ready, List<Piece> pieces, Board gameBoard) {
+        this.name = name;
+        this.playerNr = playerNr;
+        this.onTurn = onTurn;
+        this.ready = ready;
+        this.pieces = pieces;
+        this.gameBoard = gameBoard;
+    }
+
     public CheckersPlayer(String name, int playerNr, Boolean onTurn, Boolean ready, List<Piece> pieces) {
         this.name = name;
         this.playerNr = playerNr;
@@ -63,6 +89,7 @@ public class CheckersPlayer {
         ready = false;
         pieces = new ArrayList<>();
         addAllPiecesToList();
+        gameBoard = new Board(10, 10, playerNr);
     }
 
     public void readyUp() {
@@ -81,6 +108,12 @@ public class CheckersPlayer {
     public void addAllPiecesToList() {
         for (int i = 0; i < 21; i++) {
             pieces.add(new Piece(PieceType.NORMAL, this));
+        }
+    }
+
+    public void placePieces() {
+        for (Piece piece : pieces) {
+            gameBoard.placePiece(piece);
         }
     }
 }

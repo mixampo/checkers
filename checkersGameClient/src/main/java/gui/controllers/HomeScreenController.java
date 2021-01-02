@@ -1,15 +1,22 @@
 package gui.controllers;
 
 import checkersGame.ICheckersGame;
+import checkersGame.exceptions.CheckersGameFullException;
 import gui.scenes.CheckersClientGui;
 import gui.shared.SceneSwitcher;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import models.ScoreboardItem;
 import models.User;
+import service.ApiCallService;
+import service.IApiCallService;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -28,14 +35,18 @@ public class HomeScreenController implements Initializable {
     public ChoiceBox cbGameMode;
     public Label lblName;
 
+    private ObservableList<ScoreboardItem> scoreboard;
     private SceneSwitcher sceneSwitcher;
     private ICheckersGame game;
+    private CheckersClientGui gui;
+    private IApiCallService apiCallService;
     private User loggedInUser;
     private boolean singlePlayermode;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         sceneSwitcher = new SceneSwitcher();
+        apiCallService = new ApiCallService();
         cbGameMode.getItems().addAll("Singleplayer", "Multiplayer");
         btnReadyUp.setDisable(true);
     }
@@ -48,9 +59,18 @@ public class HomeScreenController implements Initializable {
     public void joinGame(ActionEvent actionEvent) {
         if (!cbGameMode.getSelectionModel().isSelected(-1)) {
             if (cbGameMode.getValue().toString().equals("Multiplayer")) {
-                //TODO join multiplayer game
+                gui = new CheckersClientGui(this.loggedInUser);
+                try {
+                    gui.registerPlayer(false);
+                } catch (CheckersGameFullException e) {
+                    e.printStackTrace();
+                }
             } else {
-                //TODO add possibility to switch to singleplayer
+                try {
+                    gui.registerPlayer(true);
+                } catch (CheckersGameFullException e) {
+                    e.printStackTrace();
+                }
             }
             btnJoinGame.setDisable(true);
             btnReadyUp.setDisable(false);
@@ -60,12 +80,8 @@ public class HomeScreenController implements Initializable {
     }
 
     public void notifyReady(ActionEvent actionEvent) {
-
-        //TODO notify
-
         Stage stage = (Stage) btnReadyUp.getScene().getWindow();
         stage.close();
-        CheckersClientGui gui = new CheckersClientGui(this.loggedInUser);
         Platform.runLater(() -> gui.start(new Stage()));
     }
 
@@ -74,6 +90,15 @@ public class HomeScreenController implements Initializable {
     }
 
     public void refreshScoreboard(ActionEvent actionEvent) {
+
+        //TODO fix view of scoreboard
+        try {
+            scoreboard = FXCollections.observableList(apiCallService.getScoreboard(loggedInUser));
+            System.out.println(scoreboard.get(0));
+            tvScoreboard.setItems(scoreboard);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void logout(ActionEvent actionEvent) {

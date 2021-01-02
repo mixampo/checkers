@@ -2,9 +2,7 @@ package checkersGame;
 
 import checkersGame.exceptions.InvalidBoxException;
 import checkersGame.exceptions.NotPlayersTurnException;
-import models.Box;
-import models.CheckersPlayer;
-import models.User;
+import models.*;
 
 public class MultiCheckersGame extends CheckersGame {
 
@@ -30,12 +28,25 @@ public class MultiCheckersGame extends CheckersGame {
     }
 
     @Override
-    public void movePiece(int playerNumber, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException {
+    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException {
         if (player_turn != playerNumber) {
             throw new NotPlayersTurnException();
         }
 
-        updateBoard(playerNumber);
+        Box b = checkersPlayers[1 - playerNumber].getGameBoard().getBox(newX, newY);
+
+        if (b.getPiece() != null || (newX + newY) % 2 == 0) {
+            throw new InvalidBoxException();
+        }
+
+        int x0 = checkersPlayers[1 - playerNumber].getGameBoard().toBoard(piece.getOldX());
+        int y0 = checkersPlayers[1 - playerNumber].getGameBoard().toBoard(piece.getOldY());
+
+        //TODO continue for move piece
+//        if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
+//
+//        }
+
 
         if (checkersPlayers[1 - playerNumber].allHit()) {
             application.showErrorMessage(playerNumber, "Winner");
@@ -45,5 +56,6 @@ public class MultiCheckersGame extends CheckersGame {
 
         player_turn = 1 - playerNumber;
         application.setPlayerTurn(player_turn);
+        updateBoard(playerNumber);
     }
 }

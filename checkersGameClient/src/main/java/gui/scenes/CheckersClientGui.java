@@ -36,11 +36,10 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     //Buttons
     private Button btnReadyToPlay;
 
-    //Multiplayer will be standard in this version of the game
-    private boolean singlePlayermode = false;
-
     // Opponent's name
     private String opponentName;
+
+    private boolean playingMode = false;
 
     private ICheckersGame game;
     private User loggedInUser;
@@ -56,10 +55,13 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     public CheckersClientGui(User user) {
         this.loggedInUser = user;
+        sceneSwitcher = new SceneSwitcher();
+        opponentName = "Opponent";
     }
 
     public CheckersClientGui() {
-
+        sceneSwitcher = new SceneSwitcher();
+        opponentName = "Opponent";
     }
 
     @Override
@@ -69,15 +71,12 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        sceneSwitcher = new SceneSwitcher();
-        opponentName = "Opponent";
+        notifyReady();
+    }
 
-        //Register the player to open a websocket connection
-        try {
-            registerPlayer();
-        } catch (CheckersGameFullException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void stop() {
+        //TODO add disconnect from websocket functionalality
     }
 
     private Parent createContent() {
@@ -112,39 +111,38 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     private MoveResult tryMove(Piece piece, int newX, int newY) {
+        if (playingMode) {
+            try {
+                game.movePiece(playerNumber, new models.Piece(piece.getOldX(), piece.getOldY()), newX, newY);
 
-        //TODO add piece for moving to new position over websocket?
-        //Call movepiece
-        try {
-            game.movePiece(playerNumber, newX, newY);
-        } catch (InvalidBoxException e) {
-            sceneSwitcher.showAlert("Checkers - error", "Invalid box, can't move piece to the new position", "");
-            e.printStackTrace();
-        } catch (NotPlayersTurnException e) {
-            sceneSwitcher.showAlert("Checkers - error", "Not your turn!", "");
-        }
+                if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
+                    return new MoveResult(MoveType.NONE);
+                }
 
+                int x0 = toBoard(piece.getOldX());
+                int y0 = toBoard(piece.getOldY());
 
+                if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
+                    return new MoveResult(MoveType.NORMAL);
+                } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
 
-        if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
-            return new MoveResult(MoveType.NONE);
-        }
+                    int x1 = x0 + (newX - x0) / 2;
+                    int y1 = y0 + (newY - y0) / 2;
 
-        int x0 = toBoard(piece.getOldX());
-        int y0 = toBoard(piece.getOldY());
-
-        if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
-            return new MoveResult(MoveType.NORMAL);
-        } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
-
-            int x1 = x0 + (newX - x0) / 2;
-            int y1 = y0 + (newY - y0) / 2;
-
-            if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != piece.getType()) {
-                return new MoveResult(MoveType.HIT, board[x1][y1].getPiece());
+                    if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != piece.getType()) {
+                        return new MoveResult(MoveType.HIT, board[x1][y1].getPiece());
+                    }
+                }
+            } catch (InvalidBoxException e) {
+                sceneSwitcher.showAlert("Checkers - error", "Invalid box, can't move piece to the new position", "");
+                e.printStackTrace();
+            } catch (NotPlayersTurnException e) {
+                sceneSwitcher.showAlert("Checkers - error", "Not your turn!", "");
+                e.printStackTrace();
             }
+        } else {
+            sceneSwitcher.showAlert("Checkers - notification", "Wait for the other player to ready up", "Message for player with player number: " + playerNumber);
         }
-
         return new MoveResult(MoveType.NONE);
     }
 
@@ -195,13 +193,14 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         return piece;
     }
 
-    private void registerPlayer() throws CheckersGameFullException {
+    public void registerPlayer(boolean singlePlayermode) throws CheckersGameFullException {
         if (!singlePlayermode) {
             game = new CheckersWebsocketGame();
+            game.registerPlayer(this.loggedInUser, this);
         } else {
             game = new SingleCheckersGame();
+            System.out.println("Different implementation");
         }
-        game.registerPlayer(this.loggedInUser, this);
     }
 
     private void notifyReady() {
@@ -215,6 +214,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void notifyStartGame(int playerNumber) {
+        playingMode = true;
         sceneSwitcher.showAlert("Checkers", "Game has started!", ("Player with player number: " + playerTurn + " has the beginning turn"));
     }
 
@@ -224,7 +224,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             return;
         }
         this.playerNumber = playerNumber;
-        sceneSwitcher.showAlert("Join game", (username + " has joined the game") , ("Message for Player with playerNumber: " + playerNumber));
+        sceneSwitcher.showAlert("Join game", (username + " has joined the game"), ("Message for Player with playerNumber: " + playerNumber));
     }
 
     @Override

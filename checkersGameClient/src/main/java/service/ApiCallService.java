@@ -1,6 +1,10 @@
 package service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import models.ScoreboardItem;
 import models.User;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -8,6 +12,9 @@ import org.json.simple.parser.ParseException;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApiCallService implements IApiCallService {
 
@@ -53,5 +60,25 @@ public class ApiCallService implements IApiCallService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public List<ScoreboardItem> getScoreboard(User user) throws JsonProcessingException {
+
+        ResponseEntity<String> jsonString = restTemplate.exchange((uri + "/scoreboard"), HttpMethod.GET, getAuthHeader(user), String.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<ScoreboardItem> scoreBoard = mapper.readValue(jsonString.getBody(), new TypeReference<ArrayList<ScoreboardItem>>() {
+        });
+
+        return scoreBoard;
+    }
+
+    private HttpEntity<?> getAuthHeader(User user) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + user.getJwt());
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        return entity;
     }
 }

@@ -1,14 +1,16 @@
 package communication.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import models.Piece;
 
 public class PositionAction extends PlayerAction {
     private int posX;
-
     private int posY;
+    private Piece piece;
 
-    public PositionAction(@JsonProperty("player_nr") int playerNr, @JsonProperty("pos_x") int posX, @JsonProperty("pos_y") int posY) {
+    public PositionAction(@JsonProperty("player_nr") int playerNr, @JsonProperty("piece")Piece piece, @JsonProperty("pos_x") int posX, @JsonProperty("pos_y") int posY) {
         super(playerNr);
+        this.piece = piece;
         this.posX = posX;
         this.posY = posY;
     }
@@ -27,5 +29,9 @@ public class PositionAction extends PlayerAction {
 
     public void setPosY(int posY) {
         this.posY = posY;
+    }
+
+    public Piece getPiece() {
+        return piece;
     }
 }

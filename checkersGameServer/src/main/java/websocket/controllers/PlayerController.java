@@ -94,7 +94,7 @@ public class PlayerController implements ICheckersGUI {
     @MessageMapping("/move-piece")
     @SendTo("/game/checkers")
     public void movePiece(PositionAction action) throws InvalidBoxException, NotPlayersTurnException {
-        game.movePiece(action.getPlayerNr(), action.getPosX(), action.getPosY());
+        game.movePiece(action.getPlayerNr(), action.getPiece(), action.getPosX(), action.getPosY());
     }
 
     @MessageMapping("/move-dam")
