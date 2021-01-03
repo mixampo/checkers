@@ -9,6 +9,7 @@ import static gui.scenes.CheckersClientGui.BOX_SIZE;
 
 public class Piece extends StackPane {
     private PieceType type;
+    private int playerNumber;
 
     private double mouseX, mouseY;
     private double oldX, oldY;
@@ -25,8 +26,9 @@ public class Piece extends StackPane {
         return oldY;
     }
 
-    public Piece(PieceType type, int x, int y) {
+    public Piece(int playerNumber, PieceType type, int x, int y) {
         this.type = type;
+        this.playerNumber = playerNumber;
 
         move(x, y);
 
@@ -57,7 +59,13 @@ public class Piece extends StackPane {
         });
 
         setOnMouseDragged(e -> {
-            relocate(e.getSceneX() - mouseX + oldX, e.getSceneY() - mouseY + oldY);
+            if (playerNumber == 0 && type == PieceType.WHITE) {
+                relocate(e.getSceneX() - mouseX + oldX, e.getSceneY() - mouseY + oldY);
+            } else if (playerNumber == 1 && type == PieceType.RED) {
+                relocate(e.getSceneX() - mouseX + oldX, e.getSceneY() - mouseY + oldY);
+            } else {
+                System.out.println("Not your piece!");
+            }
         });
     }
 

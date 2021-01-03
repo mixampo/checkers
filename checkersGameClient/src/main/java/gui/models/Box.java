@@ -21,7 +21,7 @@ public class Box extends Rectangle {
         setHeight(CheckersClientGui.BOX_SIZE);
 
         relocate(x * CheckersClientGui.BOX_SIZE, y * CheckersClientGui.BOX_SIZE);
-        setFill(light ? Color.BLACK : Color.DARKGREY);
+        setFill(light ? Color.ANTIQUEWHITE : Color.DARKGREY);
     }
 
     public boolean hasPiece() {

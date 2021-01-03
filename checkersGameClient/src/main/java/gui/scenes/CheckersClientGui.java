@@ -140,7 +140,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
 
     private Piece makePiece(PieceType type, int x, int y) {
-        Piece piece = new Piece(type, x, y);
+        Piece piece = new Piece(playerNumber, type, x, y);
 
         piece.setOnMouseReleased(e -> {
             int newX = toBoard(piece.getLayoutX());
@@ -181,8 +181,8 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         return piece;
     }
 
-    public void registerPlayer(boolean singlePlayermode) throws CheckersGameFullException {
-        if (!singlePlayermode) {
+    public void registerPlayer(boolean singlePlayerMode) throws CheckersGameFullException {
+        if (!singlePlayerMode) {
             game = new CheckersWebsocketGame();
             game.registerPlayer(this.loggedInUser, this);
         } else {
@@ -246,11 +246,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             Box tile = board[posX][posY];
 
             if (posY >= 6 && (posX + posY) % 2 != 0) {
-                if (playerNumber == 0) {
-                    piece = makePiece(PieceType.WHITE, posX, posY);
-                } else {
-                    piece = makePiece(PieceType.RED, posX, posY);
-                }
+                piece = (playerNumber == 0) ? makePiece(PieceType.WHITE, posX, posY) : makePiece(PieceType.RED, posX, posY);
             }
 
             if (piece != null) {
@@ -270,11 +266,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             Box tile = board[posX][posY];
 
             if (posY <= 3 && (posX + posY) % 2 != 0) {
-                if (playerNumber != 0) {
-                    piece = makePiece(PieceType.WHITE, posX, posY);
-                } else {
-                    piece = makePiece(PieceType.RED, posX, posY);
-                }
+                piece = (playerNumber == 0) ? makePiece(PieceType.RED, posX, posY) : makePiece(PieceType.WHITE, posX, posY);
             }
 
             if (piece != null) {
