@@ -9,7 +9,6 @@ public class ShowPiece {
 
 
     public ShowPiece(@JsonProperty("pos_x") int posX, @JsonProperty("pos_y") int posY) {
-
         this.posX = posX;
         this.posY = posY;
     }

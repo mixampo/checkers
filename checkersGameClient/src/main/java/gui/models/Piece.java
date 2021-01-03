@@ -63,8 +63,6 @@ public class Piece extends StackPane {
                 relocate(e.getSceneX() - mouseX + oldX, e.getSceneY() - mouseY + oldY);
             } else if (playerNumber == 1 && type == PieceType.RED) {
                 relocate(e.getSceneX() - mouseX + oldX, e.getSceneY() - mouseY + oldY);
-            } else {
-                System.out.println("Not your piece!");
             }
         });
     }

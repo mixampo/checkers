@@ -30,6 +30,7 @@ public class MultiCheckersGame extends CheckersGame {
     @Override
     public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException {
         if (player_turn != playerNumber) {
+            application.showErrorMessage(playerNumber, "It's not your turn!");
             throw new NotPlayersTurnException();
         }
 
@@ -37,6 +38,7 @@ public class MultiCheckersGame extends CheckersGame {
         Box b = gameBoard.getBox(newX, newY);
 
         if (b.getPiece() != null || (newX + newY) % 2 == 0) {
+            application.showErrorMessage(playerNumber, "Invalid position!");
             throw new InvalidBoxException();
         }
 
@@ -49,15 +51,18 @@ public class MultiCheckersGame extends CheckersGame {
             b.setPiece(piece);
             piece.setPlace(b);
 
+            updatePlayerBoard(playerNumber, MoveType.NORMAL);
+            updateOpponentBoard(1 - playerNumber, MoveType.NORMAL);
+
             //TODO add hit movetype
-        } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
-
-            int x1 = x0 + (newX - x0) / 2;
-            int y1 = y0 + (newY - y0) / 2;
-
-            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
-
-            }
+//        } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
+//
+//            int x1 = x0 + (newX - x0) / 2;
+//            int y1 = y0 + (newY - y0) / 2;
+//
+//            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
+//
+//            }
         }
 
 
@@ -69,6 +74,5 @@ public class MultiCheckersGame extends CheckersGame {
 
         player_turn = 1 - playerNumber;
         application.setPlayerTurn(player_turn);
-        updatePlayerBoard(playerNumber);
     }
 }

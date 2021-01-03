@@ -2,6 +2,7 @@ package gui;
 
 import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
+import checkersGame.exceptions.InvalidBoxException;
 import checkersGame.exceptions.NotPlayersTurnException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,23 +83,49 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
                     e.printStackTrace();
                 }
                 break;
-            case (MessageTypes.SHOW_PIECE_PLAYER):
+            case (MessageTypes.SET_PLAYER_TURN):
+                try {
+                    String playerTurn = mapper.readValue(gm.getMessageData(), String.class);
+                    application.setPlayerTurn(Integer.parseInt(playerTurn));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case (MessageTypes.PLACE_PIECE_PLAYER):
                 ShowPiece spp = null;
                 try {
                     spp = mapper.readValue(gm.getMessageData(), ShowPiece.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                application.showPiecePlayer(gm.getPlayerNr(), spp.getPosX(), spp.getPosY());
+                application.placePiecePlayer(gm.getPlayerNr(), spp.getPosX(), spp.getPosY());
                 break;
-            case (MessageTypes.SHOW_PIECE_OPPONENT):
+            case (MessageTypes.PLACE_PIECE_OPPONENT):
                 ShowPiece spo = null;
                 try {
                     spo = mapper.readValue(gm.getMessageData(), ShowPiece.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                application.showPieceOpponent(gm.getPlayerNr(), spo.getPosX(), spo.getPosY());
+                application.placePieceOpponent(gm.getPlayerNr(), spo.getPosX(), spo.getPosY());
+                break;
+            case (MessageTypes.MOVE_PIECE_PLAYER):
+                ShowPiece mpp = null;
+                try {
+                    mpp = mapper.readValue(gm.getMessageData(), ShowPiece.class);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                application.movePiecePlayer(gm.getPlayerNr(), mpp.getPosX(), mpp.getPosY());
+                break;
+            case (MessageTypes.MOVE_PIECE_OPPONENT):
+                ShowPiece mpo = null;
+                try {
+                    mpo = mapper.readValue(gm.getMessageData(), ShowPiece.class);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                application.movePieceOpponent(gm.getPlayerNr(), mpo.getPosX(), mpo.getPosY());
                 break;
             case (MessageTypes.NOTIFY_START):
                 application.notifyStartGame(gm.getPlayerNr());
@@ -142,7 +169,7 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
     }
 
     @Override
-    public void movePiece(int playerNumber, Piece piece, int newX, int newY) {
+    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException {
         this.session.send("/action/move-piece", new PositionAction(playerNumber, piece, newX, newY));
     }
 

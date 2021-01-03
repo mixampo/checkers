@@ -47,7 +47,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     private User loggedInUser;
 
     int playerNumber = 0;
-    private int playerTurn = 0;
+    protected int playerTurn = -1;
 
     private SceneSwitcher sceneSwitcher;
 
@@ -97,10 +97,11 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         return root;
     }
 
-    private MoveResult tryMove(Piece piece, int newX, int newY) {
+    private void tryMove(Piece piece, int newX, int newY) {
         if (playingMode) {
             try {
                 game.movePiece(playerNumber, new models.Piece(piece.getType(), piece.getOldX(), piece.getOldY()), newX, newY);
+//                return new MoveResult(MoveType.NORMAL);
 
                 //TODO continue moving this logic to MultiCheckersGame.java
 //                if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
@@ -124,14 +125,16 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             } catch (InvalidBoxException e) {
                 sceneSwitcher.showAlert("Checkers - error", "Invalid box, can't move piece to the new position", "");
                 e.printStackTrace();
+//                return new MoveResult(MoveType.NONE);
             } catch (NotPlayersTurnException e) {
                 sceneSwitcher.showAlert("Checkers - error", "Not your turn!", "");
                 e.printStackTrace();
+//                return new MoveResult(MoveType.NONE);
             }
         } else {
             sceneSwitcher.showAlert("Checkers - notification", "Wait for the other player to ready up", "Message for player with player number: " + playerNumber);
+//            return new MoveResult(MoveType.NONE);
         }
-        return new MoveResult(MoveType.NONE);
     }
 
     private int toBoard(double pixel) {
@@ -146,36 +149,37 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             int newX = toBoard(piece.getLayoutX());
             int newY = toBoard(piece.getLayoutY());
 
-            MoveResult result;
+            tryMove(piece, newX, newY);
+//            MoveResult result;
+//
+//            if (newX < 0 || newY < 0 || newX >= WIDTH || newY >= HEIGHT) {
+//                result = new MoveResult(MoveType.NONE);
+//            } else {
+//                result = tryMove(piece, newX, newY);
+//            }
 
-            if (newX < 0 || newY < 0 || newX >= WIDTH || newY >= HEIGHT) {
-                result = new MoveResult(MoveType.NONE);
-            } else {
-                result = tryMove(piece, newX, newY);
-            }
+//            int x0 = toBoard(piece.getOldX());
+//            int y0 = toBoard(piece.getOldY());
 
-            int x0 = toBoard(piece.getOldX());
-            int y0 = toBoard(piece.getOldY());
-
-            switch (result.getType()) {
-                case NONE:
-                    piece.abortMove();
-                    break;
-                case NORMAL:
-                    piece.move(newX, newY);
-                    board[x0][y0].setPiece(null);
-                    board[newX][newY].setPiece(piece);
-                    break;
-                case HIT:
-                    piece.move(newX, newY);
-                    board[x0][y0].setPiece(null);
-                    board[newX][newY].setPiece(piece);
-
-                    Piece otherPiece = result.getPiece();
-                    board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
-                    pieceGroup.getChildren().remove(otherPiece);
-                    break;
-            }
+//            switch (result.getType()) {
+//                case NONE:
+//                    piece.abortMove();
+//                    break;
+//                case NORMAL:
+//                    piece.move(newX, newY);
+//                    board[x0][y0].setPiece(null);
+//                    board[newX][newY].setPiece(piece);
+//                    break;
+//                case HIT:
+//                    piece.move(newX, newY);
+//                    board[x0][y0].setPiece(null);
+//                    board[newX][newY].setPiece(piece);
+//
+//                    Piece otherPiece = result.getPiece();
+//                    board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
+//                    pieceGroup.getChildren().remove(otherPiece);
+//                    break;
+//            }
         });
 
         return piece;
@@ -237,7 +241,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     @Override
-    public void showPiecePlayer(int playerNumber, int posX, int posY) {
+    public void placePiecePlayer(int playerNumber, int posX, int posY) {
         if (this.playerNumber != playerNumber) {
             return;
         }
@@ -257,7 +261,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     @Override
-    public void showPieceOpponent(int playerNumber, int posX, int posY) {
+    public void placePieceOpponent(int playerNumber, int posX, int posY) {
         if (this.playerNumber != playerNumber) {
             return;
         }
@@ -268,6 +272,42 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             if (posY <= 3 && (posX + posY) % 2 != 0) {
                 piece = (playerNumber == 0) ? makePiece(PieceType.RED, posX, posY) : makePiece(PieceType.WHITE, posX, posY);
             }
+
+            if (piece != null) {
+                tile.setPiece(piece);
+                pieceGroup.getChildren().add(piece);
+            }
+        });
+    }
+
+    @Override
+    public void movePiecePlayer(int playerNumber, int posX, int posY) {
+        if (this.playerNumber != playerNumber) {
+            return;
+        }
+        Platform.runLater(() -> {
+            Piece piece = null;
+            Box tile = board[posX][posY];
+
+            piece = (playerNumber == 0) ? makePiece(PieceType.WHITE, posX, posY) : makePiece(PieceType.RED, posX, posY);
+
+            if (piece != null) {
+                tile.setPiece(piece);
+                pieceGroup.getChildren().add(piece);
+            }
+        });
+    }
+
+    @Override
+    public void movePieceOpponent(int playerNumber, int posX, int posY) {
+        if (this.playerNumber != playerNumber) {
+            return;
+        }
+        Platform.runLater(() -> {
+            Piece piece = null;
+            Box tile = board[posX][posY];
+
+            piece = (playerNumber == 0) ? makePiece(PieceType.RED, posX, posY) : makePiece(PieceType.WHITE, posX, posY);
 
             if (piece != null) {
                 tile.setPiece(piece);

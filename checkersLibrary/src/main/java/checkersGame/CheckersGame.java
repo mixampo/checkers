@@ -1,8 +1,6 @@
 package checkersGame;
 
-import models.Board;
-import models.Box;
-import models.CheckersPlayer;
+import models.*;
 
 public abstract class CheckersGame implements ICheckersGame {
 
@@ -16,12 +14,12 @@ public abstract class CheckersGame implements ICheckersGame {
         CheckersPlayer checkersPlayer = checkersPlayers[playerNumber];
         checkersPlayer.readyUp();
         checkersPlayer.placePieces();
-        updatePlayerBoard(playerNumber);
-        if (checkersPlayers[1-playerNumber] != null && checkersPlayers[1 - playerNumber].getReady()) {
-            updateOpponentBoard(1 - playerNumber);
-            player_turn = 1;
-            application.notifyStartGame(player_turn);
+        updatePlayerBoard(playerNumber, MoveType.NONE);
+        if (checkersPlayers[1 - playerNumber] != null && checkersPlayers[1 - playerNumber].getReady()) {
+            updateOpponentBoard(1 - playerNumber, MoveType.NONE);
+            player_turn = 0;
             application.setPlayerTurn(player_turn);
+            application.notifyStartGame(player_turn);
         }
     }
 
@@ -50,17 +48,33 @@ public abstract class CheckersGame implements ICheckersGame {
 
     }
 
-    protected void updatePlayerBoard(int playerNumber) {
+    protected void updatePlayerBoard(int playerNumber, MoveType type) {
         Board playerBoard = checkersPlayers[playerNumber].getGameBoard();
         for (Box b : playerBoard.getBoxes()) {
-            application.showPiecePlayer(playerNumber, b.getxCord(), b.getyCord());
+            switch (type) {
+                case NONE:
+                    application.placePiecePlayer(playerNumber, b.getxCord(), b.getyCord());
+                    break;
+                case NORMAL:
+                case HIT:
+                    application.movePiecePlayer(playerNumber, b.getxCord(), b.getyCord());
+                    break;
+            }
         }
     }
 
-    protected void updateOpponentBoard(int playerNumber) {
+    protected void updateOpponentBoard(int playerNumber, MoveType type) {
         Board opponentBoard = checkersPlayers[playerNumber].getGameBoard();
         for (Box b : opponentBoard.getBoxes()) {
-            application.showPieceOpponent(playerNumber, b.getxCord(), b.getyCord());
+            switch (type) {
+                case NONE:
+                    application.placePieceOpponent(playerNumber, b.getxCord(), b.getyCord());
+                    break;
+                case NORMAL:
+                case HIT:
+                    application.movePieceOpponent(playerNumber, b.getxCord(), b.getyCord());
+                    break;
+            }
         }
     }
 }
