@@ -16,8 +16,9 @@ public abstract class CheckersGame implements ICheckersGame {
         CheckersPlayer checkersPlayer = checkersPlayers[playerNumber];
         checkersPlayer.readyUp();
         checkersPlayer.placePieces();
-        updateBoard(playerNumber);
+        updatePlayerBoard(playerNumber);
         if (checkersPlayers[1-playerNumber] != null && checkersPlayers[1 - playerNumber].getReady()) {
+            updateOpponentBoard(1 - playerNumber);
             player_turn = 1;
             application.notifyStartGame(player_turn);
             application.setPlayerTurn(player_turn);
@@ -49,10 +50,17 @@ public abstract class CheckersGame implements ICheckersGame {
 
     }
 
-    protected void updateBoard(int playerNumber) {
-        Board gameBoard = checkersPlayers[playerNumber].getGameBoard();
-        for (Box b : gameBoard.getBoxes()) {
+    protected void updatePlayerBoard(int playerNumber) {
+        Board playerBoard = checkersPlayers[playerNumber].getGameBoard();
+        for (Box b : playerBoard.getBoxes()) {
             application.showPiecePlayer(playerNumber, b.getxCord(), b.getyCord());
+        }
+    }
+
+    protected void updateOpponentBoard(int playerNumber) {
+        Board opponentBoard = checkersPlayers[playerNumber].getGameBoard();
+        for (Box b : opponentBoard.getBoxes()) {
+            application.showPieceOpponent(playerNumber, b.getxCord(), b.getyCord());
         }
     }
 }

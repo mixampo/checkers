@@ -69,6 +69,6 @@ public class MultiCheckersGame extends CheckersGame {
 
         player_turn = 1 - playerNumber;
         application.setPlayerTurn(player_turn);
-        updateBoard(playerNumber);
+        updatePlayerBoard(playerNumber);
     }
 }

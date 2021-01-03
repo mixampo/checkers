@@ -238,16 +238,19 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void showPiecePlayer(int playerNumber, int posX, int posY) {
+        if (this.playerNumber != playerNumber) {
+            return;
+        }
         Platform.runLater(() -> {
             Piece piece = null;
             Box tile = board[posX][posY];
 
-            if (posY <= 3 && (posX + posY) % 2 != 0) {
-                piece = makePiece(PieceType.RED, posX, posY);
-            }
-
             if (posY >= 6 && (posX + posY) % 2 != 0) {
-                piece = makePiece(PieceType.WHITE, posX, posY);
+                if (playerNumber == 0) {
+                    piece = makePiece(PieceType.WHITE, posX, posY);
+                } else {
+                    piece = makePiece(PieceType.RED, posX, posY);
+                }
             }
 
             if (piece != null) {
@@ -259,6 +262,25 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void showPieceOpponent(int playerNumber, int posX, int posY) {
+        if (this.playerNumber != playerNumber) {
+            return;
+        }
+        Platform.runLater(() -> {
+            Piece piece = null;
+            Box tile = board[posX][posY];
 
+            if (posY <= 3 && (posX + posY) % 2 != 0) {
+                if (playerNumber != 0) {
+                    piece = makePiece(PieceType.WHITE, posX, posY);
+                } else {
+                    piece = makePiece(PieceType.RED, posX, posY);
+                }
+            }
+
+            if (piece != null) {
+                tile.setPiece(piece);
+                pieceGroup.getChildren().add(piece);
+            }
+        });
     }
 }
