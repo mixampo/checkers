@@ -277,12 +277,16 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         }
         Platform.runLater(() -> {
             Piece piece = null;
+            piece = board[(int) oldX][(int) oldY].getPiece();
 
-            piece = (playerNumber == 0) ? makePiece(PieceType.WHITE, posX, posY) : makePiece(PieceType.RED, posX, posY);
+//            piece = (playerNumber == 0) ? makePiece(PieceType.WHITE, posX, posY) : makePiece(PieceType.RED, posX, posY);
 
             if (piece != null) {
-//                board[oldX][oldY].setPiece(null);
-//                board[posX][posY].setPiece(piece);
+                board[(int) oldX][(int) oldY].setPiece(null);
+                board[posX][posY].setPiece(piece);
+                piece.move(posX, posY);
+            } else {
+                piece.abortMove();
             }
         });
     }
