@@ -46,21 +46,21 @@ public class MultiCheckersGame extends CheckersGame {
         int y0 = gameBoard.toBoard(piece.getOldY());
 
         if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
-            
             gameBoard.getBox(x0, y0).setPiece(null);
             b.setPiece(piece);
             piece.setPlace(b);
 
-            updatePlayerBoard(playerNumber, MoveType.NORMAL);
-            updateOpponentBoard(1 - playerNumber, MoveType.NORMAL);
+            updatePlayerBoard(playerNumber, MoveType.NORMAL, piece.getOldX(), piece.getOldY());
+            updateOpponentBoard(1 - playerNumber, MoveType.NORMAL, piece.getOldX(), piece.getOldY());
 
-            //TODO add hit movetype
 //        } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
 //
 //            int x1 = x0 + (newX - x0) / 2;
 //            int y1 = y0 + (newY - y0) / 2;
 //
 //            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
+//                updatePlayerBoard(playerNumber, MoveType.HIT);
+//                updateOpponentBoard(1 - playerNumber, MoveType.HIT);
 //
 //            }
         }

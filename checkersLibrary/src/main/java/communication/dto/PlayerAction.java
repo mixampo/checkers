@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class PlayerAction {
-
     private int playerNr;
 
     public int getPlayerNr() {

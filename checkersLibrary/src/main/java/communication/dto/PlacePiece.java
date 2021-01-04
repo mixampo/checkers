@@ -3,14 +3,16 @@ package communication.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class ShowPiece {
+public class PlacePiece {
     private int posX;
     private int posY;
+    private boolean hasPiece;
 
 
-    public ShowPiece(@JsonProperty("pos_x") int posX, @JsonProperty("pos_y") int posY) {
+    public PlacePiece(@JsonProperty("pos_x") int posX, @JsonProperty("pos_y") int posY, @JsonProperty("hasPiece") boolean hasPiece) {
         this.posX = posX;
         this.posY = posY;
+        this.hasPiece = hasPiece;
     }
 
     public int getPosX() {
@@ -29,5 +31,14 @@ public class ShowPiece {
     @JsonSetter("pos_y")
     public void setPosY(int posY) {
         this.posY = posY;
+    }
+
+    public boolean getHasPiece() {
+        return hasPiece;
+    }
+
+    @JsonSetter("hasPiece")
+    public void setHasPiece(boolean hasPiece) {
+        this.hasPiece = hasPiece;
     }
 }

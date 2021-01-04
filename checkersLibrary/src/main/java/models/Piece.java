@@ -80,6 +80,10 @@ public class Piece {
         this.player = player;
     }
 
+    public Piece() {
+
+    }
+
     public boolean isHit() {
         return place == null;
     }

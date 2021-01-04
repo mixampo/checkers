@@ -67,6 +67,10 @@ public class Piece extends StackPane {
         });
     }
 
+    public Piece() {
+
+    }
+
 
     public void move(int x, int y) {
         oldX = x * BOX_SIZE;

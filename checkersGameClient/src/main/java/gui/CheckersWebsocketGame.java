@@ -8,10 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import communication.GameMessage;
 import communication.MessageTypes;
-import communication.dto.PlayerAction;
-import communication.dto.PositionAction;
-import communication.dto.RegisteredPlayer;
-import communication.dto.ShowPiece;
+import communication.dto.*;
 import models.Piece;
 import models.User;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -92,40 +89,40 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
                 }
                 break;
             case (MessageTypes.PLACE_PIECE_PLAYER):
-                ShowPiece spp = null;
+                PlacePiece spp = null;
                 try {
-                    spp = mapper.readValue(gm.getMessageData(), ShowPiece.class);
+                    spp = mapper.readValue(gm.getMessageData(), PlacePiece.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                application.placePiecePlayer(gm.getPlayerNr(), spp.getPosX(), spp.getPosY());
+                application.placePiecePlayer(gm.getPlayerNr(), spp.getPosX(), spp.getPosY(), spp.getHasPiece());
                 break;
             case (MessageTypes.PLACE_PIECE_OPPONENT):
-                ShowPiece spo = null;
+                PlacePiece spo = null;
                 try {
-                    spo = mapper.readValue(gm.getMessageData(), ShowPiece.class);
+                    spo = mapper.readValue(gm.getMessageData(), PlacePiece.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                application.placePieceOpponent(gm.getPlayerNr(), spo.getPosX(), spo.getPosY());
+                application.placePieceOpponent(gm.getPlayerNr(), spo.getPosX(), spo.getPosY(), spo.getHasPiece());
                 break;
             case (MessageTypes.MOVE_PIECE_PLAYER):
-                ShowPiece mpp = null;
+                MovePiece mpp = null;
                 try {
-                    mpp = mapper.readValue(gm.getMessageData(), ShowPiece.class);
+                    mpp = mapper.readValue(gm.getMessageData(), MovePiece.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                application.movePiecePlayer(gm.getPlayerNr(), mpp.getPosX(), mpp.getPosY());
+                application.movePiecePlayer(gm.getPlayerNr(), mpp.getPosX(), mpp.getPosY(), mpp.getOldX(), mpp.getOldY());
                 break;
             case (MessageTypes.MOVE_PIECE_OPPONENT):
-                ShowPiece mpo = null;
+                MovePiece mpo = null;
                 try {
-                    mpo = mapper.readValue(gm.getMessageData(), ShowPiece.class);
+                    mpo = mapper.readValue(gm.getMessageData(), MovePiece.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                application.movePieceOpponent(gm.getPlayerNr(), mpo.getPosX(), mpo.getPosY());
+                application.movePieceOpponent(gm.getPlayerNr(), mpo.getPosX(), mpo.getPosY(), mpo.getOldX(), mpo.getOldY());
                 break;
             case (MessageTypes.NOTIFY_START):
                 application.notifyStartGame(gm.getPlayerNr());

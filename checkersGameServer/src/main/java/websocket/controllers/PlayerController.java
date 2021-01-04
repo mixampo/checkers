@@ -9,10 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import communication.GameMessage;
 import communication.MessageTypes;
-import communication.dto.PlayerAction;
-import communication.dto.PositionAction;
-import communication.dto.RegisteredPlayer;
-import communication.dto.ShowPiece;
+import communication.dto.*;
 import models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -77,38 +74,38 @@ public class PlayerController implements ICheckersGUI {
     }
 
     @Override
-    public void placePiecePlayer(int playerNumber, int posX, int posY) {
+    public void placePiecePlayer(int playerNumber, int posX, int posY, boolean hasPiece) {
         try {
-            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.PLACE_PIECE_PLAYER, mapper.writeValueAsString(new ShowPiece(posX, posY))));
+            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.PLACE_PIECE_PLAYER, mapper.writeValueAsString(new PlacePiece(posX, posY, hasPiece))));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void placePieceOpponent(int playerNumber, int posX, int posY) {
+    public void placePieceOpponent(int playerNumber, int posX, int posY, boolean hasPiece) {
         try {
-            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.PLACE_PIECE_OPPONENT, mapper.writeValueAsString(new ShowPiece(posX, posY))));
-            this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.PLACE_PIECE_OPPONENT, mapper.writeValueAsString(new ShowPiece(posX, posY))));
+            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.PLACE_PIECE_OPPONENT, mapper.writeValueAsString(new PlacePiece(posX, posY, hasPiece))));
+            this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.PLACE_PIECE_OPPONENT, mapper.writeValueAsString(new PlacePiece(posX, posY, hasPiece))));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void movePiecePlayer(int playerNumber, int posX, int posY) {
+    public void movePiecePlayer(int playerNumber, int posX, int posY, double oldX, double oldY) {
         try {
-            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.MOVE_PIECE_PLAYER, mapper.writeValueAsString(new ShowPiece(posX, posY))));
+            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.MOVE_PIECE_PLAYER, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void movePieceOpponent(int playerNumber, int posX, int posY) {
+    public void movePieceOpponent(int playerNumber, int posX, int posY, double oldX, double oldY) {
         try {
-            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new ShowPiece(posX, posY))));
-            this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new ShowPiece(posX, posY))));
+            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
+            this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

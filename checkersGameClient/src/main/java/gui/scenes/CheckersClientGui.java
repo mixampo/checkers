@@ -11,6 +11,7 @@ import gui.models.*;
 import gui.shared.SceneSwitcher;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -90,7 +91,6 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             for (int x = 0; x < WIDTH; x++) {
                 Box tile = new Box((x + y) % 2 == 0, x, y);
                 board[x][y] = tile;
-
                 boxGroup.getChildren().add(tile);
             }
         }
@@ -124,16 +124,12 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 //                }
             } catch (InvalidBoxException e) {
                 sceneSwitcher.showAlert("Checkers - error", "Invalid box, can't move piece to the new position", "");
-                e.printStackTrace();
-//                return new MoveResult(MoveType.NONE);
             } catch (NotPlayersTurnException e) {
                 sceneSwitcher.showAlert("Checkers - error", "Not your turn!", "");
                 e.printStackTrace();
-//                return new MoveResult(MoveType.NONE);
             }
         } else {
             sceneSwitcher.showAlert("Checkers - notification", "Wait for the other player to ready up", "Message for player with player number: " + playerNumber);
-//            return new MoveResult(MoveType.NONE);
         }
     }
 
@@ -143,9 +139,10 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
 
     private Piece makePiece(PieceType type, int x, int y) {
+
         Piece piece = new Piece(playerNumber, type, x, y);
 
-        piece.setOnMouseReleased(e -> {
+        piece.setOnMouseReleased((EventHandler) mouseEvent -> {
             int newX = toBoard(piece.getLayoutX());
             int newY = toBoard(piece.getLayoutY());
 
@@ -181,7 +178,6 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 //                    break;
 //            }
         });
-
         return piece;
     }
 
@@ -241,17 +237,14 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     @Override
-    public void placePiecePlayer(int playerNumber, int posX, int posY) {
+    public void placePiecePlayer(int playerNumber, int posX, int posY, boolean hasPiece) {
         if (this.playerNumber != playerNumber) {
             return;
         }
         Platform.runLater(() -> {
-            Piece piece = null;
             Box tile = board[posX][posY];
 
-            if (posY >= 6 && (posX + posY) % 2 != 0) {
-                piece = (playerNumber == 0) ? makePiece(PieceType.WHITE, posX, posY) : makePiece(PieceType.RED, posX, posY);
-            }
+            Piece piece = (playerNumber == 0 && hasPiece) ? makePiece(PieceType.WHITE, posX, posY) : (playerNumber != 0 && hasPiece) ? makePiece(PieceType.RED, posX, posY) : null;
 
             if (piece != null) {
                 tile.setPiece(piece);
@@ -261,58 +254,54 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     @Override
-    public void placePieceOpponent(int playerNumber, int posX, int posY) {
-        if (this.playerNumber != playerNumber) {
-            return;
-        }
-        Platform.runLater(() -> {
-            Piece piece = null;
-            Box tile = board[posX][posY];
-
-            if (posY <= 3 && (posX + posY) % 2 != 0) {
-                piece = (playerNumber == 0) ? makePiece(PieceType.RED, posX, posY) : makePiece(PieceType.WHITE, posX, posY);
-            }
-
-            if (piece != null) {
-                tile.setPiece(piece);
-                pieceGroup.getChildren().add(piece);
-            }
-        });
+    public void placePieceOpponent(int playerNumber, int posX, int posY, boolean hasPiece) {
+//        if (this.playerNumber != playerNumber) {
+//            return;
+//        }
+//        Platform.runLater(() -> {
+//            Box tile = board[posX][posY];
+//
+//            Piece piece = (playerNumber == 0 && hasPiece) ? makePiece(PieceType.RED, posX, posY) : (playerNumber != 0 && hasPiece) ? makePiece(PieceType.WHITE, posX, posY) : null;
+//
+//            if (piece != null) {
+//                tile.setPiece(piece);
+//                pieceGroup.getChildren().add(piece);
+//            }
+//        });
     }
 
     @Override
-    public void movePiecePlayer(int playerNumber, int posX, int posY) {
+    public void movePiecePlayer(int playerNumber, int posX, int posY, double oldX, double oldY) {
         if (this.playerNumber != playerNumber) {
             return;
         }
         Platform.runLater(() -> {
             Piece piece = null;
-            Box tile = board[posX][posY];
 
             piece = (playerNumber == 0) ? makePiece(PieceType.WHITE, posX, posY) : makePiece(PieceType.RED, posX, posY);
 
             if (piece != null) {
-                tile.setPiece(piece);
-                pieceGroup.getChildren().add(piece);
+//                board[oldX][oldY].setPiece(null);
+//                board[posX][posY].setPiece(piece);
             }
         });
     }
 
     @Override
-    public void movePieceOpponent(int playerNumber, int posX, int posY) {
-        if (this.playerNumber != playerNumber) {
-            return;
-        }
-        Platform.runLater(() -> {
-            Piece piece = null;
-            Box tile = board[posX][posY];
-
-            piece = (playerNumber == 0) ? makePiece(PieceType.RED, posX, posY) : makePiece(PieceType.WHITE, posX, posY);
-
-            if (piece != null) {
-                tile.setPiece(piece);
-                pieceGroup.getChildren().add(piece);
-            }
-        });
+    public void movePieceOpponent(int playerNumber, int posX, int posY, double oldX, double oldY) {
+//        if (this.playerNumber != playerNumber) {
+//            return;
+//        }
+//        Platform.runLater(() -> {
+//            Piece piece = null;
+//            Box tile = board[posX][posY];
+//
+//            piece = (playerNumber == 0) ? makePiece(PieceType.RED, posX, posY) : makePiece(PieceType.WHITE, posX, posY);
+//
+//            if (piece != null) {
+//                tile.setPiece(piece);
+//                pieceGroup.getChildren().add(piece);
+//            }
+//        });
     }
 }

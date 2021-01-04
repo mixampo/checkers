@@ -7,8 +7,8 @@ public interface ICheckersGUI {
     void showErrorMessage(int playerNr, String errorMessage);
     void setOpponentName(int playerNr, String name);
     void showWinner(int playerNumber);
-    void placePiecePlayer(int playerNumber, int posX, int posY);
-    void placePieceOpponent(int playerNumber, int posX, int posY);
-    void movePiecePlayer(int playerNumber, int posX, int posY);
-    void movePieceOpponent(int playerNumber, int posX, int posY);
+    void placePiecePlayer(int playerNumber, int posX, int posY, boolean hasPiece);
+    void placePieceOpponent(int playerNumber, int posX, int posY, boolean hasPiece);
+    void movePiecePlayer(int playerNumber, int posX, int posY, double oldX, double oldY);
+    void movePieceOpponent(int playerNumber, int posX, int posY, double oldX, double oldY);
 }

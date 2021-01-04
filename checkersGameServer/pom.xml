@@ -79,6 +79,13 @@
             <artifactId>spring-messaging</artifactId>
             <version>5.2.9.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/net.mikera/vectorz -->
+        <dependency>
+            <groupId>net.mikera</groupId>
+            <artifactId>vectorz</artifactId>
+            <version>0.67.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
