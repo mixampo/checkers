@@ -6,6 +6,7 @@ import checkersGame.SingleCheckersGame;
 import checkersGame.exceptions.CheckersGameFullException;
 import checkersGame.exceptions.InvalidBoxException;
 import checkersGame.exceptions.NotPlayersTurnException;
+import checkersGame.exceptions.PointOutOfBoundsException;
 import gui.CheckersWebsocketGame;
 import gui.models.*;
 import gui.shared.SceneSwitcher;
@@ -73,7 +74,10 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         primaryStage.setTitle("Checkers - Game");
         primaryStage.setScene(scene);
         primaryStage.show();
-
+        primaryStage.setMaxHeight(1039);
+        primaryStage.setMaxWidth(1016);
+        primaryStage.setMinHeight(1039);
+        primaryStage.setMinWidth(1016);
         notifyReady();
     }
 
@@ -97,42 +101,6 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
         return root;
     }
 
-    private void tryMove(Piece piece, int newX, int newY) {
-        if (playingMode) {
-            try {
-                game.movePiece(playerNumber, new models.Piece(piece.getType(), piece.getOldX(), piece.getOldY()), newX, newY);
-//                return new MoveResult(MoveType.NORMAL);
-
-                //TODO continue moving this logic to MultiCheckersGame.java
-//                if (board[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
-//                    return new MoveResult(MoveType.NONE);
-//                }
-//
-//                int x0 = toBoard(piece.getOldX());
-//                int y0 = toBoard(piece.getOldY());
-//
-//                if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
-//                    return new MoveResult(MoveType.NORMAL);
-//                } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
-//
-//                    int x1 = x0 + (newX - x0) / 2;
-//                    int y1 = y0 + (newY - y0) / 2;
-//
-//                    if (board[x1][y1].hasPiece() && board[x1][y1].getPiece().getType() != piece.getType()) {
-//                        return new MoveResult(MoveType.HIT, board[x1][y1].getPiece());
-//                    }
-//                }
-            } catch (InvalidBoxException e) {
-                sceneSwitcher.showAlert("Checkers - error", "Invalid box, can't move piece to the new position", "");
-            } catch (NotPlayersTurnException e) {
-                sceneSwitcher.showAlert("Checkers - error", "Not your turn!", "");
-                e.printStackTrace();
-            }
-        } else {
-            sceneSwitcher.showAlert("Checkers - notification", "Wait for the other player to ready up", "Message for player with player number: " + playerNumber);
-        }
-    }
-
     private int toBoard(double pixel) {
         return (int) (pixel + BOX_SIZE / 2) / BOX_SIZE;
     }
@@ -146,7 +114,21 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             int newX = toBoard(piece.getLayoutX());
             int newY = toBoard(piece.getLayoutY());
 
-            tryMove(piece, newX, newY);
+            if (playingMode) {
+                if (newX < 0 || newY < 0 || newX >= WIDTH || newY >= HEIGHT) {
+                    sceneSwitcher.showAlert("Checkers - notification", "Point out of bounds!", "Message for player with player number: " + playerNumber);
+                    piece.abortMove();
+                } else {
+                    try {
+                        game.movePiece(playerNumber, new models.Piece(piece.getType(), piece.getOldX(), piece.getOldY()), toBoard(piece.getLayoutX()), toBoard(piece.getLayoutY()));
+                    } catch (InvalidBoxException | NotPlayersTurnException | PointOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                sceneSwitcher.showAlert("Checkers - notification", "Wait for the other player to ready up", "Message for player with player number: " + playerNumber);
+                piece.abortMove();
+            }
 //            MoveResult result;
 //
 //            if (newX < 0 || newY < 0 || newX >= WIDTH || newY >= HEIGHT) {
@@ -222,7 +204,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void showErrorMessage(int playerNumber, String errorMessage) {
-        sceneSwitcher.showAlert("Error", ("Error for player with playerNumber: " + playerNumber), errorMessage);
+        sceneSwitcher.showAlert("Checkers - Error", errorMessage, ("Error for player with playerNumber: " + playerNumber));
     }
 
     @Override
@@ -271,28 +253,25 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     @Override
-    public void movePiecePlayer(int playerNumber, int posX, int posY, double oldX, double oldY) {
+    public void movePiecePlayer(int playerNumber, int posX, int posY, int oldX, int oldY) {
         if (this.playerNumber != playerNumber) {
             return;
         }
         Platform.runLater(() -> {
-            Piece piece = null;
-            piece = board[(int) oldX][(int) oldY].getPiece();
+            Piece piece = board[oldX][oldY].getPiece();
 
-//            piece = (playerNumber == 0) ? makePiece(PieceType.WHITE, posX, posY) : makePiece(PieceType.RED, posX, posY);
-
-            if (piece != null) {
-                board[(int) oldX][(int) oldY].setPiece(null);
-                board[posX][posY].setPiece(piece);
-                piece.move(posX, posY);
-            } else {
+            if (posX == oldX && posY == oldY) {
                 piece.abortMove();
+            } else {
+                piece.move(posX, posY);
+                board[posX][posY].setPiece(piece);
+                board[oldX][oldY].setPiece(null);
             }
         });
     }
 
     @Override
-    public void movePieceOpponent(int playerNumber, int posX, int posY, double oldX, double oldY) {
+    public void movePieceOpponent(int playerNumber, int posX, int posY, int oldX, int oldY) {
 //        if (this.playerNumber != playerNumber) {
 //            return;
 //        }

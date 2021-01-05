@@ -1,5 +1,5 @@
 package models;
 
 public enum MoveType {
-    NONE, NORMAL, HIT
+    PLACE, NONE, NORMAL, HIT
 }

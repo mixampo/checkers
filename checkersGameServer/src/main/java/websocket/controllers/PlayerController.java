@@ -5,6 +5,7 @@ import checkersGame.ICheckersGame;
 import checkersGame.MultiCheckersGame;
 import checkersGame.exceptions.InvalidBoxException;
 import checkersGame.exceptions.NotPlayersTurnException;
+import checkersGame.exceptions.PointOutOfBoundsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import communication.GameMessage;
@@ -93,7 +94,7 @@ public class PlayerController implements ICheckersGUI {
     }
 
     @Override
-    public void movePiecePlayer(int playerNumber, int posX, int posY, double oldX, double oldY) {
+    public void movePiecePlayer(int playerNumber, int posX, int posY, int oldX, int oldY) {
         try {
             this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.MOVE_PIECE_PLAYER, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
         } catch (JsonProcessingException e) {
@@ -102,7 +103,7 @@ public class PlayerController implements ICheckersGUI {
     }
 
     @Override
-    public void movePieceOpponent(int playerNumber, int posX, int posY, double oldX, double oldY) {
+    public void movePieceOpponent(int playerNumber, int posX, int posY, int oldX, int oldY) {
         try {
             this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
             this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
@@ -130,7 +131,7 @@ public class PlayerController implements ICheckersGUI {
 
     @MessageMapping("/move-piece")
     @SendTo("/game/checkers")
-    public void movePiece(PositionAction action) throws InvalidBoxException, NotPlayersTurnException {
+    public void movePiece(PositionAction action) throws InvalidBoxException, NotPlayersTurnException, PointOutOfBoundsException {
         game.movePiece(action.getPlayerNr(), action.getPiece(), action.getPosX(), action.getPosY());
     }
 

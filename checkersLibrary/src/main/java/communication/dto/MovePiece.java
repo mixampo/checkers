@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class MovePiece {
     private int posX;
     private int posY;
-    private double oldX;
-    private double oldY;
+    private int oldX;
+    private int oldY;
 
-    public MovePiece(@JsonProperty("pos_x") int posX, @JsonProperty("pos_y") int posY, @JsonProperty("old_x") double oldX, @JsonProperty("old_y") double oldy) {
+    public MovePiece(@JsonProperty("pos_x") int posX, @JsonProperty("pos_y") int posY, @JsonProperty("old_x") int oldX, @JsonProperty("old_y") int oldY) {
         this.posX = posX;
         this.posY = posY;
         this.oldX = oldX;
@@ -38,21 +38,21 @@ public class MovePiece {
         this.posY = posY;
     }
 
-    public double getOldX() {
+    public int getOldX() {
         return oldX;
     }
 
     @JsonSetter("old_x")
-    public void setOldX(double oldX) {
+    public void setOldX(int oldX) {
         this.oldX = oldX;
     }
 
-    public double getOldY() {
+    public int getOldY() {
         return oldY;
     }
 
     @JsonSetter("old_y")
-    public void setOldY(double oldY) {
+    public void setOldY(int oldY) {
         this.oldY = oldY;
     }
 }

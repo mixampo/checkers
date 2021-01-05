@@ -2,6 +2,7 @@ package checkersGame;
 
 import checkersGame.exceptions.InvalidBoxException;
 import checkersGame.exceptions.NotPlayersTurnException;
+import checkersGame.exceptions.PointOutOfBoundsException;
 import models.*;
 
 public class MultiCheckersGame extends CheckersGame {
@@ -28,43 +29,52 @@ public class MultiCheckersGame extends CheckersGame {
     }
 
     @Override
-    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException {
-        if (player_turn != playerNumber) {
-            application.showErrorMessage(playerNumber, "It's not your turn!");
-            throw new NotPlayersTurnException();
-        }
+    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException, PointOutOfBoundsException {
 
         Board gameBoard = checkersPlayers[playerNumber].getGameBoard();
         Box b = gameBoard.getBox(newX, newY);
+        int oldX = gameBoard.toBoard(piece.getOldX());
+        int oldY = gameBoard.toBoard(piece.getOldY());
 
-        if (b.getPiece() != null || (newX + newY) % 2 == 0) {
+        if (player_turn != playerNumber) {
+            application.showErrorMessage(playerNumber, "It's not your turn!");
+
+            newX = oldX;
+            newY = oldY;
+            updatePlayerBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
+            updateOpponentBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
+            throw new NotPlayersTurnException();
+        }
+
+        if (b.getPiece() != null || (newX + newY) % 2 == 0 || (Math.abs(newX - oldX) != 1 && newY - oldY != piece.getType().getMoveDir())) {
             application.showErrorMessage(playerNumber, "Invalid position!");
+
+            newX = oldX;
+            newY = oldY;
+            updatePlayerBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
+            updateOpponentBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
             throw new InvalidBoxException();
         }
 
-        int x0 = gameBoard.toBoard(piece.getOldX());
-        int y0 = gameBoard.toBoard(piece.getOldY());
-
-        if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getType().getMoveDir()) {
-            gameBoard.getBox(x0, y0).setPiece(null);
+        if (Math.abs(newX - oldX) == 1 && newY - oldY == piece.getType().getMoveDir()) {
+            gameBoard.getBox(oldX, oldY).setPiece(null);
             b.setPiece(piece);
             piece.setPlace(b);
 
-            updatePlayerBoard(playerNumber, MoveType.NORMAL, piece.getOldX(), piece.getOldY());
-            updateOpponentBoard(1 - playerNumber, MoveType.NORMAL, piece.getOldX(), piece.getOldY());
+            updatePlayerBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
+            updateOpponentBoard(1 - playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
 
-//        } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getType().getMoveDir() * 2) {
+//        } else if (Math.abs(newX - oldX) == 2 && newY - oldY == piece.getType().getMoveDir() * 2) {
 //
-//            int x1 = x0 + (newX - x0) / 2;
-//            int y1 = y0 + (newY - y0) / 2;
+//            int x1 = oldX + (newX - oldX) / 2;
+//            int y1 = oldY + (newY - oldY) / 2;
 //
-//            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
-//                updatePlayerBoard(playerNumber, MoveType.HIT);
-//                updateOpponentBoard(1 - playerNumber, MoveType.HIT);
-//
-//            }
+////            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
+////                updatePlayerBoard(playerNumber, MoveType.HIT);
+////                updateOpponentBoard(1 - playerNumber, MoveType.HIT);
+////
+////            }
         }
-
 
         if (checkersPlayers[1 - playerNumber].allHit()) {
             application.showErrorMessage(playerNumber, "Winner");
