@@ -46,7 +46,7 @@ public class MultiCheckersGame extends CheckersGame {
             throw new NotPlayersTurnException();
         }
 
-        if (b.getPiece() != null || (newX + newY) % 2 == 0 || (Math.abs(newX - oldX) != 1 && newY - oldY != piece.getType().getMoveDir())) {
+        if (b.getPiece() != null || (newX + newY) % 2 == 0 || (Math.abs(newX - oldX) != 1 || newY - oldY != piece.getType().getMoveDir())) {
             application.showErrorMessage(playerNumber, "Invalid position!");
 
             newX = oldX;
@@ -69,11 +69,11 @@ public class MultiCheckersGame extends CheckersGame {
 //            int x1 = oldX + (newX - oldX) / 2;
 //            int y1 = oldY + (newY - oldY) / 2;
 //
-////            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
-////                updatePlayerBoard(playerNumber, MoveType.HIT);
-////                updateOpponentBoard(1 - playerNumber, MoveType.HIT);
-////
-////            }
+//            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
+//                updatePlayerBoard(playerNumber, MoveType.HIT);
+//                updateOpponentBoard(1 - playerNumber, MoveType.HIT);
+//
+//            }
         }
 
         if (checkersPlayers[1 - playerNumber].allHit()) {

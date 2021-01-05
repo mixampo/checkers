@@ -49,6 +49,7 @@ public abstract class CheckersGame implements ICheckersGame {
 
     }
 
+
     protected void updatePlayerBoard(int playerNumber, MoveType type, int newX, int newY, int oldX, int oldY) {
         Board playerBoard = checkersPlayers[playerNumber].getGameBoard();
         for (Box b : playerBoard.getBoxes()) {
