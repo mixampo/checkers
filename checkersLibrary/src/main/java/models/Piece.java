@@ -94,6 +94,10 @@ public class Piece {
         return place == null;
     }
 
+    public void hit() {
+         place = null;
+    }
+
     public boolean isPlaced() {
         return place != null;
     }

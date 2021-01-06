@@ -59,6 +59,7 @@ public class MultiCheckersGame extends CheckersGame {
             b.setPiece(piece);
             piece.setPlace(b);
 
+
             updatePlayerBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
             updateOpponentBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
 
@@ -68,9 +69,12 @@ public class MultiCheckersGame extends CheckersGame {
 //            int y1 = oldY + (newY - oldY) / 2;
 //
 //            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
-//                updatePlayerBoard(playerNumber, MoveType.HIT);
-//                updateOpponentBoard(1 - playerNumber, MoveType.HIT);
-//
+//                //TODO update boards after hitting piece
+//                gameBoard.getBox(x1, y1).getPiece().hit();
+//                gameBoard.getBox(x1, y1).setPiece(null);
+//                gameBoard.getBox(oldX, oldY).setPiece(null);
+//                b.setPiece(piece);
+//                piece.setPlace(b);
 //            }
         }
 

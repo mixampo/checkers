@@ -70,6 +70,7 @@ public abstract class CheckersGame implements ICheckersGame {
 
     protected void updateOpponentBoard(int playerNumber, MoveType type, int newX, int newY, int oldX, int oldY) {
         Board opponentBoard = checkersPlayers[1 - playerNumber].getGameBoard();
+
         newX = 9 - newX;
         newY = 9 - newY;
         oldX = 9 - oldX;
@@ -81,10 +82,17 @@ public abstract class CheckersGame implements ICheckersGame {
                 case NORMAL:
                 case HIT:
                     if ((9 - b.getxCord()) == newX && (9 - b.getyCord()) == newY) {
+                        checkersPlayers[playerNumber].getGameBoard().getBox(oldX, oldY).setPiece(null);
+                        checkersPlayers[playerNumber].getGameBoard().getBox(newX, newY).setPiece(b.getPiece());
+
                         application.movePieceOpponent(playerNumber, newX, newY, oldX, oldY);
                     }
                     break;
                 case PLACE:
+                    if (b.getPiece() != null) {
+                        Box bp = checkersPlayers[playerNumber].getGameBoard().getBox((9 - b.getxCord()), (9 - b.getyCord()));
+                        bp.setPiece(b.getPiece());
+                    }
                     application.placePieceOpponent(playerNumber, (9 - b.getxCord()), (9 - b.getyCord()), b.getPiece() != null);
                     break;
             }
