@@ -113,7 +113,7 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                application.movePiecePlayer(gm.getPlayerNr(), mpp.getPosX(), mpp.getPosY(), mpp.getOldX(), mpp.getOldY());
+                application.movePiece(gm.getPlayerNr(), mpp.getPosX(), mpp.getPosY(), mpp.getOldX(), mpp.getOldY());
                 break;
             case (MessageTypes.MOVE_PIECE_OPPONENT):
                 MovePiece mpo = null;

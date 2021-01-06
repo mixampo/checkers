@@ -17,7 +17,7 @@ public abstract class CheckersGame implements ICheckersGame {
         checkersPlayer.placePieces();
         updatePlayerBoard(playerNumber, MoveType.PLACE, 0, 0, 0, 0);
         if (checkersPlayers[1 - playerNumber] != null && checkersPlayers[1 - playerNumber].getReady()) {
-            updateOpponentBoard(1 - playerNumber, MoveType.PLACE, 0, 0, 0, 0);
+            updateOpponentBoard(playerNumber, MoveType.PLACE, 0, 0, 0, 0);
             player_turn = 0;
             application.setPlayerTurn(player_turn);
             application.notifyStartGame(player_turn);
@@ -58,7 +58,7 @@ public abstract class CheckersGame implements ICheckersGame {
                 case NORMAL:
                 case HIT:
                     if (b.getxCord() == newX && b.getyCord() == newY && b.hasPiece()) {
-                        application.movePiecePlayer(playerNumber, b.getxCord(), b.getyCord(), oldX, oldY);
+                        application.movePiece(playerNumber, newX, newY, oldX, oldY);
                     }
                     break;
                 case PLACE:
@@ -69,20 +69,25 @@ public abstract class CheckersGame implements ICheckersGame {
     }
 
     protected void updateOpponentBoard(int playerNumber, MoveType type, int newX, int newY, int oldX, int oldY) {
-//        Board opponentBoard = checkersPlayers[playerNumber].getGameBoard();
-//        for (Box b : opponentBoard.getBoxes()) {
-//            switch (type) {
-//                case NONE:
-//                case NORMAL:
-//                case HIT:
-//                    if (b.getxCord() == newX && b.getyCord() == newY && b.hasPiece()) {
-//                        application.movePieceOpponent(playerNumber, b.getxCord(), b.getyCord(), oldX, oldY);
-//                    }
-//                    break;
-//                case PLACE:
-//                    application.placePieceOpponent(playerNumber, b.getxCord(), b.getyCord(), b.hasPiece());
-//                    break;
-//            }
-//        }
+        Board opponentBoard = checkersPlayers[1 - playerNumber].getGameBoard();
+        for (Box b : opponentBoard.getBoxes()) {
+            newX = 9 - newX;
+            newY = 9 - newY;
+            oldX = 9 - oldX;
+            oldY = 9 - oldY;
+
+            switch (type) {
+                case NONE:
+                case NORMAL:
+                case HIT:
+                    if (9 - (b.getxCord()) == newX && (9 - b.getyCord()) == newY && b.hasPiece()) {
+                        application.movePieceOpponent(playerNumber, newX, newY, oldX, oldY);
+                    }
+                    break;
+                case PLACE:
+                    application.placePieceOpponent(playerNumber, (9 - b.getxCord()), (9 - b.getyCord()), b.hasPiece());
+                    break;
+            }
+        }
     }
 }

@@ -9,6 +9,6 @@ public interface ICheckersGUI {
     void showWinner(int playerNumber);
     void placePiecePlayer(int playerNumber, int posX, int posY, boolean hasPiece);
     void placePieceOpponent(int playerNumber, int posX, int posY, boolean hasPiece);
-    void movePiecePlayer(int playerNumber, int posX, int posY, int oldX, int oldY);
+    void movePiece(int playerNumber, int posX, int posY, int oldX, int oldY);
     void movePieceOpponent(int playerNumber, int posX, int posY, int oldX, int oldY);
 }

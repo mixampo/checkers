@@ -94,7 +94,7 @@ public class PlayerController implements ICheckersGUI {
     }
 
     @Override
-    public void movePiecePlayer(int playerNumber, int posX, int posY, int oldX, int oldY) {
+    public void movePiece(int playerNumber, int posX, int posY, int oldX, int oldY) {
         try {
             this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.MOVE_PIECE_PLAYER, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
         } catch (JsonProcessingException e) {
@@ -106,7 +106,7 @@ public class PlayerController implements ICheckersGUI {
     public void movePieceOpponent(int playerNumber, int posX, int posY, int oldX, int oldY) {
         try {
             this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
-            this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
+//            this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.MOVE_PIECE_OPPONENT, mapper.writeValueAsString(new MovePiece(posX, posY, oldX, oldY))));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

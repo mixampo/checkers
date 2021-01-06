@@ -16,7 +16,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import models.User;
@@ -41,7 +40,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     private ICheckersGame game;
     private User loggedInUser;
 
-    int playerNumber = 0;
+    int playerNumber = -1;
     protected int playerTurn = -1;
 
     private SceneSwitcher sceneSwitcher;
@@ -107,7 +106,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             int newX = toBoard(piece.getLayoutX());
             int newY = toBoard(piece.getLayoutY());
 
-            if (playingMode) {
+            if (playingMode && newX != (int) piece.getOldX() && newY != piece.getOldY()) {
                 if (newX < 0 || newY < 0 || newX >= WIDTH || newY >= HEIGHT) {
                     sceneSwitcher.showAlert("Checkers - notification", "Point out of bounds!", "Message for player with player number: " + playerNumber);
                     piece.abortMove();
@@ -119,7 +118,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
                     }
                 }
             } else {
-                sceneSwitcher.showAlert("Checkers - notification", "Wait for the other player to ready up", "Message for player with player number: " + playerNumber);
+                sceneSwitcher.showAlert("Checkers - notification", "Can't move piece", "Message for player with player number: " + playerNumber);
                 piece.abortMove();
             }
 //            MoveResult result;
@@ -230,23 +229,23 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void placePieceOpponent(int playerNumber, int posX, int posY, boolean hasPiece) {
-//        if (this.playerNumber != playerNumber) {
-//            return;
-//        }
-//        Platform.runLater(() -> {
-//            Box tile = board[posX][posY];
-//
-//            Piece piece = (playerNumber == 0 && hasPiece) ? makePiece(PieceType.RED, posX, posY) : (playerNumber != 0 && hasPiece) ? makePiece(PieceType.WHITE, posX, posY) : null;
-//
-//            if (piece != null) {
-//                tile.setPiece(piece);
-//                pieceGroup.getChildren().add(piece);
-//            }
-//        });
+        if (this.playerNumber != playerNumber) {
+            return;
+        }
+        Platform.runLater(() -> {
+            Box tile = board[posX][posY];
+
+            Piece piece = (playerNumber == 0 && hasPiece) ? makePiece(PieceType.RED, posX, posY) : (playerNumber != 0 && hasPiece) ? makePiece(PieceType.WHITE, posX, posY) : null;
+
+            if (piece != null) {
+                tile.setPiece(piece);
+                pieceGroup.getChildren().add(piece);
+            }
+        });
     }
 
     @Override
-    public void movePiecePlayer(int playerNumber, int posX, int posY, int oldX, int oldY) {
+    public void movePiece(int playerNumber, int posX, int posY, int oldX, int oldY) {
         if (this.playerNumber != playerNumber) {
             return;
         }
@@ -265,19 +264,6 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void movePieceOpponent(int playerNumber, int posX, int posY, int oldX, int oldY) {
-//        if (this.playerNumber != playerNumber) {
-//            return;
-//        }
-//        Platform.runLater(() -> {
-//            Piece piece = null;
-//            Box tile = board[posX][posY];
-//
-//            piece = (playerNumber == 0) ? makePiece(PieceType.RED, posX, posY) : makePiece(PieceType.WHITE, posX, posY);
-//
-//            if (piece != null) {
-//                tile.setPiece(piece);
-//                pieceGroup.getChildren().add(piece);
-//            }
-//        });
+        movePiece(playerNumber, posX, posY, oldX, oldY);
     }
 }
