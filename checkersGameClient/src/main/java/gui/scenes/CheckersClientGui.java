@@ -106,7 +106,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
             int newX = toBoard(piece.getLayoutX());
             int newY = toBoard(piece.getLayoutY());
 
-            if (playingMode && newX != (int) piece.getOldX() && newY != piece.getOldY()) {
+            if (playingMode && newX != toBoard(piece.getOldX()) && newY != toBoard(piece.getOldY())) {
                 if (newX < 0 || newY < 0 || newX >= WIDTH || newY >= HEIGHT) {
                     sceneSwitcher.showAlert("Checkers - notification", "Point out of bounds!", "Message for player with player number: " + playerNumber);
                     piece.abortMove();

@@ -70,17 +70,27 @@ public abstract class CheckersGame implements ICheckersGame {
 
     protected void updateOpponentBoard(int playerNumber, MoveType type, int newX, int newY, int oldX, int oldY) {
         Board opponentBoard = checkersPlayers[1 - playerNumber].getGameBoard();
-        for (Box b : opponentBoard.getBoxes()) {
-            newX = 9 - newX;
-            newY = 9 - newY;
-            oldX = 9 - oldX;
-            oldY = 9 - oldY;
+        newX = 9 - newX;
+        newY = 9 - newY;
+        oldX = 9 - oldX;
+        oldY = 9 - oldY;
 
+        for (Box b : opponentBoard.getBoxes()) {
             switch (type) {
                 case NONE:
                 case NORMAL:
                 case HIT:
-                    if (9 - (b.getxCord()) == newX && (9 - b.getyCord()) == newY && b.hasPiece()) {
+                    System.out.println("--");
+                    System.out.println(newX);
+                    System.out.println("--");
+                    System.out.println(newY);
+                    System.out.println("--");
+                    System.out.println(9-b.getxCord());
+                    System.out.println("--");
+                    System.out.println(9-b.getyCord());
+                    System.out.println("--");
+                    System.out.println(b.hasPiece());
+                    if ((9 - b.getxCord()) == newX && (9 - b.getyCord()) == newY && b.hasPiece()) {
                         application.movePieceOpponent(playerNumber, newX, newY, oldX, oldY);
                     }
                     break;

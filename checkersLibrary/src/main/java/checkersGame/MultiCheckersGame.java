@@ -42,7 +42,6 @@ public class MultiCheckersGame extends CheckersGame {
             newX = oldX;
             newY = oldY;
             updatePlayerBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
-            updateOpponentBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
             throw new NotPlayersTurnException();
         }
 
@@ -52,7 +51,6 @@ public class MultiCheckersGame extends CheckersGame {
             newX = oldX;
             newY = oldY;
             updatePlayerBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
-            updateOpponentBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
             throw new InvalidBoxException();
         }
 
@@ -62,7 +60,7 @@ public class MultiCheckersGame extends CheckersGame {
             piece.setPlace(b);
 
             updatePlayerBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
-            updateOpponentBoard(1 - playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
+            updateOpponentBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
 
 //        } else if (Math.abs(newX - oldX) == 2 && newY - oldY == piece.getType().getMoveDir() * 2) {
 //
