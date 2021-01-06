@@ -29,18 +29,11 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     public static final int WIDTH = 10;
     public static final int HEIGHT = 10;
 
-    //Buttons
-    private final int BUTTONWIDTH = 180; // Width of button
-
     private Box[][] board = new Box[WIDTH][HEIGHT];
 
     private Group boxGroup = new Group();
     private Group pieceGroup = new Group();
 
-    //Buttons
-    private Button btnReadyToPlay;
-
-    // Opponent's name
     private String opponentName;
 
     private boolean playingMode = false;
