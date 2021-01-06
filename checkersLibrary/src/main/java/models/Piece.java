@@ -54,6 +54,12 @@ public class Piece {
         this.player = player;
     }
 
+    public Piece(PieceType type, Box place, CheckersPlayer player) {
+        this.type = type;
+        this.place = place;
+        this.player = player;
+    }
+
     public Piece(PieceType type, char color, CheckersPlayer player) {
         this.type = type;
         this.color = color;

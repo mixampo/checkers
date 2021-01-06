@@ -57,12 +57,12 @@ public abstract class CheckersGame implements ICheckersGame {
                 case NONE:
                 case NORMAL:
                 case HIT:
-                    if (b.getxCord() == newX && b.getyCord() == newY && b.hasPiece()) {
-                        application.movePiece(playerNumber, newX, newY, oldX, oldY);
+                    if (b.getxCord() == newX && b.getyCord() == newY && b.getPiece() != null) {
+                        application.movePiecePlayer(playerNumber, newX, newY, oldX, oldY);
                     }
                     break;
                 case PLACE:
-                    application.placePiecePlayer(playerNumber, b.getxCord(), b.getyCord(), b.hasPiece());
+                    application.placePiecePlayer(playerNumber, b.getxCord(), b.getyCord(), b.getPiece() != null);
                     break;
             }
         }
@@ -80,22 +80,12 @@ public abstract class CheckersGame implements ICheckersGame {
                 case NONE:
                 case NORMAL:
                 case HIT:
-                    System.out.println("--");
-                    System.out.println(newX);
-                    System.out.println("--");
-                    System.out.println(newY);
-                    System.out.println("--");
-                    System.out.println(9-b.getxCord());
-                    System.out.println("--");
-                    System.out.println(9-b.getyCord());
-                    System.out.println("--");
-                    System.out.println(b.hasPiece());
-                    if ((9 - b.getxCord()) == newX && (9 - b.getyCord()) == newY && b.hasPiece()) {
+                    if ((9 - b.getxCord()) == newX && (9 - b.getyCord()) == newY) {
                         application.movePieceOpponent(playerNumber, newX, newY, oldX, oldY);
                     }
                     break;
                 case PLACE:
-                    application.placePieceOpponent(playerNumber, (9 - b.getxCord()), (9 - b.getyCord()), b.hasPiece());
+                    application.placePieceOpponent(playerNumber, (9 - b.getxCord()), (9 - b.getyCord()), b.getPiece() != null);
                     break;
             }
         }

@@ -245,7 +245,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     @Override
-    public void movePiece(int playerNumber, int posX, int posY, int oldX, int oldY) {
+    public void movePiecePlayer(int playerNumber, int posX, int posY, int oldX, int oldY) {
         if (this.playerNumber != playerNumber) {
             return;
         }
@@ -264,6 +264,6 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void movePieceOpponent(int playerNumber, int posX, int posY, int oldX, int oldY) {
-        movePiece(playerNumber, posX, posY, oldX, oldY);
+        movePiecePlayer(playerNumber, posX, posY, oldX, oldY);
     }
 }

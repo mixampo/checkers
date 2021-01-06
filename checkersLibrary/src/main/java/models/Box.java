@@ -5,7 +5,6 @@ public class Box {
     private  int yCord;
     private Piece piece;
     private Board board;
-    private boolean hasPiece;
 
     public int getxCord() {
         return xCord;
@@ -39,13 +38,6 @@ public class Box {
         this.board = board;
     }
 
-    public boolean isHasPiece() {
-        return hasPiece;
-    }
-
-    public void setHasPiece(boolean hasPiece) {
-        this.hasPiece = hasPiece;
-    }
 
     public Box(int xCord, int yCord, Piece piece, Board board) {
         this.xCord = xCord;
@@ -61,9 +53,5 @@ public class Box {
 
     public void removePiece() {
         piece = null;
-    }
-
-    public boolean hasPiece() {
-        return piece != null;
     }
 }
