@@ -266,4 +266,21 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     public void movePieceOpponent(int playerNumber, int posX, int posY, int oldX, int oldY) {
         movePiecePlayer(playerNumber, posX, posY, oldX, oldY);
     }
+
+    @Override
+    public void hitPiecePlayer(int playerNumber, int posX, int posY) {
+        if (this.playerNumber != playerNumber) {
+            return;
+        }
+        Platform.runLater(() -> {
+            Piece piece = board[posX][posY].getPiece();
+            board[posX][posY].setPiece(null);
+            pieceGroup.getChildren().remove(piece);
+        });
+    }
+
+    @Override
+    public void hitPieceOpponent(int playerNumber, int posX, int posY) {
+        hitPiecePlayer(playerNumber, posX, posY);
+    }
 }

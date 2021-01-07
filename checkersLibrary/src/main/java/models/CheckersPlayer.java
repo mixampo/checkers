@@ -112,8 +112,19 @@ public class CheckersPlayer {
     }
 
     public void placePieces() {
-        for (Piece piece : pieces) {
-            gameBoard.placePiece(piece);
-        }
+        gameBoard.placePiece(pieces);
     }
+
+//    public void hitPiece(Piece piece) {
+//
+//        System.out.println(piece.getPlace().getxCord());
+//        System.out.println(piece.getPlace().getyCord());
+//
+//        Piece hitPiece = pieces.stream().filter(p -> p.getPlace().getxCord() == piece.getPlace().getxCord() &&
+//                p.getPlace().getyCord() == piece.getPlace().getyCord()).findAny().orElse(null);
+//
+//
+//        gameBoard.getBox(hitPiece.getPlace().getxCord(), hitPiece.getPlace().getyCord()).setPiece(null);
+//        hitPiece.hit();
+//    }
 }

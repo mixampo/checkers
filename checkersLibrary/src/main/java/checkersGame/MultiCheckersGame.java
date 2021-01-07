@@ -31,31 +31,25 @@ public class MultiCheckersGame extends CheckersGame {
     @Override
     public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException, PointOutOfBoundsException {
 
-        Board gameBoard = checkersPlayers[playerNumber].getGameBoard();
-        Box b = gameBoard.getBox(newX, newY);
-        int oldX = gameBoard.toBoard(piece.getOldX());
-        int oldY = gameBoard.toBoard(piece.getOldY());
+        Board playerBoard = checkersPlayers[playerNumber].getGameBoard();
+        Board opponentBoard = checkersPlayers[1 - playerNumber].getGameBoard();
+        Box b = playerBoard.getBox(newX, newY);
+        int oldX = playerBoard.toBoard(piece.getOldX());
+        int oldY = playerBoard.toBoard(piece.getOldY());
 
         if (player_turn != playerNumber) {
-            application.showErrorMessage(playerNumber, "It's not your turn!");
-
-            newX = oldX;
-            newY = oldY;
-            updatePlayerBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
+            noMove(playerNumber, oldX, oldY, "It's not your turn!");
             throw new NotPlayersTurnException();
         }
 
-        if (b.getPiece() != null || (newX + newY) % 2 == 0 || (Math.abs(newX - oldX) != 1 || newY - oldY != piece.getType().getMoveDir())) {
-            application.showErrorMessage(playerNumber, "Invalid position!");
 
-            newX = oldX;
-            newY = oldY;
-            updatePlayerBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
+        if (b.getPiece() != null || (newX + newY) % 2 == 0) {
+            noMove(playerNumber, oldX, oldY, "Invalid position!");
             throw new InvalidBoxException();
         }
 
         if (Math.abs(newX - oldX) == 1 && newY - oldY == piece.getType().getMoveDir()) {
-            gameBoard.getBox(oldX, oldY).setPiece(null);
+            playerBoard.getBox(oldX, oldY).setPiece(null);
             b.setPiece(piece);
             piece.setPlace(b);
 
@@ -63,19 +57,33 @@ public class MultiCheckersGame extends CheckersGame {
             updatePlayerBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
             updateOpponentBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
 
-//        } else if (Math.abs(newX - oldX) == 2 && newY - oldY == piece.getType().getMoveDir() * 2) {
-//
-//            int x1 = oldX + (newX - oldX) / 2;
-//            int y1 = oldY + (newY - oldY) / 2;
-//
-//            if (gameBoard.getBox(x1, y1).getPiece() != null && gameBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
-//                //TODO update boards after hitting piece
-//                gameBoard.getBox(x1, y1).getPiece().hit();
-//                gameBoard.getBox(x1, y1).setPiece(null);
-//                gameBoard.getBox(oldX, oldY).setPiece(null);
-//                b.setPiece(piece);
-//                piece.setPlace(b);
-//            }
+        } else if (Math.abs(newX - oldX) == 2 && newY - oldY == piece.getType().getMoveDir() * 2) {
+
+            int x1 = oldX + (newX - oldX) / 2;
+            int y1 = oldY + (newY - oldY) / 2;
+            int x2 = (9 - oldX) + ((9 - newX) - (9 - oldX)) / 2;
+            int y2 = (9 - oldY) + ((9 - newY) - (9 - oldY)) / 2;
+
+            if (playerBoard.getBox(x1, y1).getPiece() != null && playerBoard.getBox(x1, y1).getPiece().getType() != piece.getType()) {
+
+                playerBoard.getBox(x1, y1).setPiece(null);
+                playerBoard.getBox(oldX, oldY).setPiece(null);
+                b.setPiece(piece);
+                piece.setPlace(b);
+
+                updatePlayerBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
+                updateOpponentBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
+
+                updatePlayerBoard(playerNumber, MoveType.HIT, x1, y1, oldX, oldY);
+                updateOpponentBoard(playerNumber, MoveType.HIT, x2, y2, oldX, oldY);
+
+            } else {
+                noMove(playerNumber, oldX, oldY, "Invalid position!");
+                throw new InvalidBoxException();
+            }
+        } else {
+            noMove(playerNumber, oldX, oldY, "Invalid position!");
+            throw new InvalidBoxException();
         }
 
         if (checkersPlayers[1 - playerNumber].allHit()) {
@@ -86,5 +94,12 @@ public class MultiCheckersGame extends CheckersGame {
 
         player_turn = 1 - playerNumber;
         application.setPlayerTurn(player_turn);
+    }
+
+    private void noMove(int playerNumber, int oldX, int oldY, String message) {
+        application.showErrorMessage(playerNumber, message);
+        int newX = oldX;
+        int newY = oldY;
+        updatePlayerBoard(playerNumber, MoveType.NONE, newX, newY, oldX, oldY);
     }
 }

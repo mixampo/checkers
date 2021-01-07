@@ -124,6 +124,24 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
                 }
                 application.movePieceOpponent(gm.getPlayerNr(), mpo.getPosX(), mpo.getPosY(), mpo.getOldX(), mpo.getOldY());
                 break;
+            case (MessageTypes.HIT_PIECE_PLAYER):
+                HitPiece hpp = null;
+                try {
+                    hpp = mapper.readValue(gm.getMessageData(), HitPiece.class);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                application.hitPiecePlayer(gm.getPlayerNr(), hpp.getPosX(), hpp.getPosY());
+                break;
+            case (MessageTypes.HIT_PIECE_OPPONENT):
+                HitPiece hpo = null;
+                try {
+                    hpo = mapper.readValue(gm.getMessageData(), HitPiece.class);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                application.hitPieceOpponent(gm.getPlayerNr(), hpo.getPosX(), hpo.getPosY());
+                break;
             case (MessageTypes.NOTIFY_START):
                 application.notifyStartGame(gm.getPlayerNr());
                 break;

@@ -6,6 +6,7 @@ public class Piece {
     private char color;
     private CheckersPlayer player;
     private double oldX, oldY;
+    private boolean isHit;
 
     public PieceType getType() {
         return type;
@@ -47,43 +48,62 @@ public class Piece {
         return oldY;
     }
 
+    public void setHit(boolean hit) {
+        isHit = hit;
+    }
+
+    public void setOldX(double oldX) {
+        this.oldX = oldX;
+    }
+
+    public void setOldY(double oldY) {
+        this.oldY = oldY;
+    }
+
     public Piece(PieceType type, Box place, char color, CheckersPlayer player) {
         this.type = type;
         this.place = place;
         this.color = color;
         this.player = player;
+        this.isHit = false;
     }
 
     public Piece(PieceType type, Box place, CheckersPlayer player) {
         this.type = type;
         this.place = place;
         this.player = player;
+        this.isHit = false;
     }
 
     public Piece(PieceType type, char color, CheckersPlayer player) {
         this.type = type;
         this.color = color;
         this.player = player;
+        this.isHit = false;
     }
 
     public Piece(PieceType type, CheckersPlayer player) {
         this.type = type;
         this.player = player;
+        this.isHit = false;
     }
 
     public Piece(double oldX, double oldY) {
         this.oldX = oldX;
         this.oldY = oldY;
+        this.isHit = false;
     }
 
     public Piece(PieceType type, double oldX, double oldY) {
         this.type = type;
         this.oldX = oldX;
         this.oldY = oldY;
+        this.isHit = false;
     }
 
     public Piece(CheckersPlayer player) {
         this.player = player;
+        this.isHit = false;
     }
 
     public Piece() {
@@ -96,6 +116,7 @@ public class Piece {
 
     public void hit() {
          place = null;
+         isHit = true;
     }
 
     public boolean isPlaced() {

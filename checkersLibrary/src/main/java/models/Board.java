@@ -56,20 +56,15 @@ public class Board {
 
     public void generateBoxes() {
         boxes = new ArrayList<>();
-        for (int y = 0; y < width; y++) {
-            for (int z = 0; z < length; z++) {
-                boxes.add(new Box(z, y));
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < length; y++) {
+                boxes.add(new Box(x, y));
             }
         }
     }
 
     public Box getBox(int x, int y) {
-        for (Box b : boxes) {
-            if (b.getxCord() == x && b.getyCord() == y) {
-                return b;
-            }
-        }
-        return null;
+        return boxes.stream().filter(b -> b.getxCord() == x && b.getyCord() == y).findAny().orElse(null);
     }
 
     public void clearBoard() {
@@ -80,13 +75,15 @@ public class Board {
         }
     }
 
-    public void placePiece(Piece piece) {
+    public void placePiece(List<Piece> pieces) {
+        int count = 0;
         for (int y = 0; y < length; y++) {
             for (int x = 0; x < width; x++) {
                 if (y >= 6 && (x + y) % 2 != 0) {
-                    Box b = this.getBox(x, y);
-                    b.setPiece(piece);
-                    piece.setPlace(b);
+                    Box b = getBox(x, y);
+                    b.setPiece(pieces.get(count));
+                    pieces.get(count).setPlace(b);
+                    count++;
                 }
             }
         }

@@ -11,4 +11,6 @@ public interface ICheckersGUI {
     void placePieceOpponent(int playerNumber, int posX, int posY, boolean hasPiece);
     void movePiecePlayer(int playerNumber, int posX, int posY, int oldX, int oldY);
     void movePieceOpponent(int playerNumber, int posX, int posY, int oldX, int oldY);
+    void hitPiecePlayer(int playerNumber, int posX, int posY);
+    void hitPieceOpponent(int playerNumber, int posX, int posY);
 }

@@ -111,6 +111,24 @@ public class PlayerController implements ICheckersGUI {
         }
     }
 
+    @Override
+    public void hitPiecePlayer(int playerNumber, int posX, int posY) {
+        try {
+            this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.HIT_PIECE_PLAYER, mapper.writeValueAsString(new HitPiece(posX, posY))));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void hitPieceOpponent(int playerNumber, int posX, int posY) {
+        try {
+            this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.HIT_PIECE_OPPONENT, mapper.writeValueAsString(new HitPiece(posX, posY))));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @MessageMapping("/join-game")
     @SendTo("/game/checkers")
