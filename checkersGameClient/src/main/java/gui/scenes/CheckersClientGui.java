@@ -17,6 +17,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import models.User;
 import models.PieceType;
@@ -36,6 +37,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     private String opponentName;
 
     private boolean playingMode = false;
+    private boolean gameEnded = false;
 
     private ICheckersGame game;
     private User loggedInUser;
@@ -121,36 +123,6 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
                 sceneSwitcher.showAlert("Checkers - notification", "Can't move piece", "Message for player with player number: " + playerNumber);
                 piece.abortMove();
             }
-//            MoveResult result;
-//
-//            if (newX < 0 || newY < 0 || newX >= WIDTH || newY >= HEIGHT) {
-//                result = new MoveResult(MoveType.NONE);
-//            } else {
-//                result = tryMove(piece, newX, newY);
-//            }
-
-//            int x0 = toBoard(piece.getOldX());
-//            int y0 = toBoard(piece.getOldY());
-
-//            switch (result.getType()) {
-//                case NONE:
-//                    piece.abortMove();
-//                    break;
-//                case NORMAL:
-//                    piece.move(newX, newY);
-//                    board[x0][y0].setPiece(null);
-//                    board[newX][newY].setPiece(piece);
-//                    break;
-//                case HIT:
-//                    piece.move(newX, newY);
-//                    board[x0][y0].setPiece(null);
-//                    board[newX][newY].setPiece(piece);
-//
-//                    Piece otherPiece = result.getPiece();
-//                    board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
-//                    pieceGroup.getChildren().remove(otherPiece);
-//                    break;
-//            }
         });
         return piece;
     }
@@ -207,7 +179,10 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void showWinner(int playerNumber) {
-
+        for (int x = 0, y = 0; x <= WIDTH && y <= HEIGHT; x++, y++) {
+            board[x][y].setFill(this.playerNumber == playerNumber ? Color.GREEN : Color.RED);
+        }
+        gameEnded = true;
     }
 
     @Override

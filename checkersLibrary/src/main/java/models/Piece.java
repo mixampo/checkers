@@ -111,13 +111,13 @@ public class Piece {
     }
 
     public boolean isHit() {
-        return place == null;
+        return isHit;
     }
 
-    public void hit() {
-         place = null;
-         isHit = true;
-    }
+//    public void hit() {
+//         place = null;
+//         isHit = true;
+//    }
 
     public boolean isPlaced() {
         return place != null;
