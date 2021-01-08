@@ -63,6 +63,11 @@ public class PlayerController implements ICheckersGUI {
     }
 
     @Override
+    public void showInfoMessage(int playerNumber, String infoMessage) {
+        this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.INFO, infoMessage));
+    }
+
+    @Override
     public void notifyStartGame(int playerNumber) {
         websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.NOTIFY_START, "READY"));
         websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.NOTIFY_START, "READY"));

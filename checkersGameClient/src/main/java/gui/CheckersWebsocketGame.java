@@ -151,6 +151,10 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
                 break;
             case (MessageTypes.ERROR):
                 application.showErrorMessage(gm.getPlayerNr(), gm.getMessageData());
+                break;
+            case (MessageTypes.INFO):
+                application.showInfoMessage(gm.getPlayerNr(), gm.getMessageData());
+                break;
             default:
                 break;
         }

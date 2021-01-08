@@ -107,17 +107,18 @@ public class CheckersPlayer {
     }
 
     public boolean allHit() {
+        int count = 0;
         for (Piece p : pieces) {
-            if (!p.isHit()) {
-                return false;
+            if (p.isHit()) {
+                count++;
             }
         }
-        return true;
+        return count == 20;
     }
 
     public void addAllPiecesToList() {
         for (int i = 0; i < 21; i++) {
-            pieces.add(new Piece((playerNumber == 0) ? PieceType.WHITE : PieceType.RED ,this));
+            pieces.add(new Piece((playerNumber == 0) ? PieceType.WHITE : PieceType.RED, this));
         }
     }
 
@@ -125,16 +126,25 @@ public class CheckersPlayer {
         gameBoard.placePiece(pieces);
     }
 
-//    public void hitPiece(Piece piece) {
-//
-//        System.out.println(piece.getPlace().getxCord());
-//        System.out.println(piece.getPlace().getyCord());
-//
-//        Piece hitPiece = pieces.stream().filter(p -> p.getPlace().getxCord() == piece.getPlace().getxCord() &&
-//                p.getPlace().getyCord() == piece.getPlace().getyCord()).findAny().orElse(null);
-//
-//
-//        gameBoard.getBox(hitPiece.getPlace().getxCord(), hitPiece.getPlace().getyCord()).setPiece(null);
-//        hitPiece.hit();
-//    }
+    public Piece getPieceAtBox(int posX, int posY) {
+        Piece piece = gameBoard.getBox(posX, posY).getPiece();
+        return piece;
+    }
+
+    public void movePiece(int oldX, int oldY, int newX, int newY) {
+        Box newBox = gameBoard.getBox(newX, newY);
+        Box oldBox = gameBoard.getBox(oldX, oldY);
+        Piece piece = gameBoard.getBox(oldX, oldY).getPiece();
+
+        newBox.setPiece(piece);
+        oldBox.setPiece(null);
+        piece.setPlace(newBox);
+    }
+
+    public void hitPiece(int posX, int posY) {
+        Piece piece = gameBoard.getBox(posX, posY).getPiece();
+        piece.setPlace(null);
+        piece.setHit(true);
+        gameBoard.getBox(posX, posY).setPiece(null);
+    }
 }

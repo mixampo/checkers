@@ -55,7 +55,7 @@ public abstract class CheckersGame implements ICheckersGame {
     protected void checkForPossibleHit(int playerNumber) throws MustHitException {
         Board playerBoard = checkersPlayers[playerNumber].getGameBoard();
         for (Box b : playerBoard.getBoxes()) {
-            if (b.getPiece() != null && b.getPiece().getType().toString().charAt(0) == checkersPlayers[playerNumber].getColor()) {
+            if (b.getPiece() != null && b.getPiece().getPlayer().getPlayerNumber() == playerNumber) {
                 for (int x = -2, y = -2, k = 1; k < 5; k++) {
                     Box c = playerBoard.getBox(b.getxCord() + x, b.getyCord() + y);
                     if (c != null && c.getPiece() == null) {
@@ -143,9 +143,7 @@ public abstract class CheckersGame implements ICheckersGame {
                     break;
                 case HIT:
                     if (b.getxCord() == newX && b.getyCord() == newY) {
-//                        checkersPlayers[1 - playerNumber].hitPiece(opponentBoard.getBox(newX, newY).getPiece());
-                        opponentBoard.getBox(newX, newY).getPiece().setHit(true);
-                        opponentBoard.getBox(newX, newY).setPiece(null);
+                        checkersPlayers[1 - playerNumber].hitPiece(newX, newY);
                         application.hitPieceOpponent(playerNumber, newX, newY);
                     }
                     break;

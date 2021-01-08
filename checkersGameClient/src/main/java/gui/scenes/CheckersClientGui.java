@@ -169,6 +169,11 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
     }
 
     @Override
+    public void showInfoMessage(int playerNr, String infoMessage) {
+        sceneSwitcher.showAlert("Checkers - Info", infoMessage, ("Info for player with playerNumber: " + playerNumber));
+    }
+
+    @Override
     public void setOpponentName(int playerNumber, String name) {
         sceneSwitcher.showAlert("Checkers", ("Your opponent is: " + name), "");
         opponentName = name;
@@ -176,9 +181,17 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void showWinner(int playerNumber) {
-        for (int x = 0, y = 0; x <= WIDTH && y <= HEIGHT; x++, y++) {
-            board[x][y].setFill(this.playerNumber == playerNumber ? Color.GREEN : Color.RED);
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                Piece piece = board[x][y].getPiece();
+                if (piece != null) {
+                    board[x][x].setPiece(null);
+                    pieceGroup.getChildren().remove(piece);
+                }
+                board[x][y].setFill(this.playerNumber == playerNumber ? Color.GREEN : Color.RED);
+            }
         }
+        showInfoMessage(playerNumber, "Player with playerNumber: " + playerNumber + " has won the game!");
         gameEnded = true;
     }
 

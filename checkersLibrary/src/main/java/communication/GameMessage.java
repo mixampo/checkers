@@ -13,19 +13,6 @@ public class GameMessage {
     @JsonProperty("message_data")
     private String messageData;
 
-    public GameMessage() {}
-
-    public GameMessage(String messageType, String messageData) {
-        this.messageType = messageType;
-        this.messageData = messageData;
-    }
-
-    public GameMessage(int playerNr, String messageType, String messageData) {
-        this.messageType = messageType;
-        this.messageData = messageData;
-        this.playerNr = playerNr;
-    }
-
     public String getMessageType() {
         return messageType;
     }
@@ -52,4 +39,18 @@ public class GameMessage {
     public void setPlayerNr(int playerNr) {
         this.playerNr = playerNr;
     }
+
+    public GameMessage() {}
+
+    public GameMessage(String messageType, String messageData) {
+        this.messageType = messageType;
+        this.messageData = messageData;
+    }
+
+    public GameMessage(int playerNr, String messageType, String messageData) {
+        this.messageType = messageType;
+        this.messageData = messageData;
+        this.playerNr = playerNr;
+    }
+
 }
