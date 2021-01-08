@@ -4,6 +4,7 @@ import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import checkersGame.MultiCheckersGame;
 import checkersGame.exceptions.InvalidBoxException;
+import checkersGame.exceptions.MustHitException;
 import checkersGame.exceptions.NotPlayersTurnException;
 import checkersGame.exceptions.PointOutOfBoundsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -148,7 +149,7 @@ public class PlayerController implements ICheckersGUI {
 
     @MessageMapping("/move-piece")
     @SendTo("/game/checkers")
-    public void movePiece(PositionAction action) throws InvalidBoxException, NotPlayersTurnException, PointOutOfBoundsException {
+    public void movePiece(PositionAction action) throws InvalidBoxException, NotPlayersTurnException, PointOutOfBoundsException, MustHitException {
         game.movePiece(action.getPlayerNr(), action.getPiece(), action.getPosX(), action.getPosY());
     }
 

@@ -30,7 +30,7 @@ public class MultiCheckersGame extends CheckersGame {
     }
 
     @Override
-    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException, PointOutOfBoundsException {
+    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException, PointOutOfBoundsException, MustHitException {
 
         Board playerBoard = checkersPlayers[playerNumber].getGameBoard();
         Board opponentBoard = checkersPlayers[1 - playerNumber].getGameBoard();
@@ -55,14 +55,12 @@ public class MultiCheckersGame extends CheckersGame {
                 checkForPossibleHit(playerNumber);
             } catch (MustHitException e) {
                 noMove(playerNumber, oldX, oldY, "Must hit when possible!");
-                e.printStackTrace();
-                throw new InvalidBoxException();
+                throw e;
             }
 
             playerBoard.getBox(oldX, oldY).setPiece(null);
             b.setPiece(piece);
             piece.setPlace(b);
-
 
             updatePlayerBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
             updateOpponentBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);

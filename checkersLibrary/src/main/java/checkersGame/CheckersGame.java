@@ -53,17 +53,10 @@ public abstract class CheckersGame implements ICheckersGame {
 
 
     protected void checkForPossibleHit(int playerNumber) throws MustHitException {
-
-        //-2 -2
-        //+2 +2
-        //-2 +2
-        //+2 -2
-
         Board playerBoard = checkersPlayers[playerNumber].getGameBoard();
-
         for (Box b : playerBoard.getBoxes()) {
-            if (b.getPiece() != null && b.getPiece().getPlayer() == checkersPlayers[playerNumber]) {
-                for (int x = -2, y = -2, k = 0; k < 4; k++) {
+            if (b.getPiece() != null && b.getPiece().getType().toString().charAt(0) == checkersPlayers[playerNumber].getColor()) {
+                for (int x = -2, y = -2, k = 1; k < 5; k++) {
                     Box c = playerBoard.getBox(b.getxCord() + x, b.getyCord() + y);
                     if (c != null && c.getPiece() == null) {
                         int x0 = b.getxCord() + (c.getxCord() - b.getxCord()) / 2;
@@ -73,10 +66,10 @@ public abstract class CheckersGame implements ICheckersGame {
                             throw new MustHitException();
                         }
                     }
-                    if (k == 0) {
+                    if (k == 1) {
                         x = x + 4;
                         y = y + 4;
-                    } else if (k == 1) {
+                    } else if (k == 2) {
                         x = x - 4;
                     } else {
                         x = x + 4;

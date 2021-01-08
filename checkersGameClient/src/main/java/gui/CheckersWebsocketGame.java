@@ -3,6 +3,7 @@ package gui;
 import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import checkersGame.exceptions.InvalidBoxException;
+import checkersGame.exceptions.MustHitException;
 import checkersGame.exceptions.NotPlayersTurnException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -184,7 +185,7 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
     }
 
     @Override
-    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException {
+    public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException, MustHitException {
         this.session.send("/action/move-piece", new PositionAction(playerNumber, piece, newX, newY));
     }
 

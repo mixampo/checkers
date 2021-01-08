@@ -3,10 +3,7 @@ package gui.scenes;
 import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import checkersGame.SingleCheckersGame;
-import checkersGame.exceptions.CheckersGameFullException;
-import checkersGame.exceptions.InvalidBoxException;
-import checkersGame.exceptions.NotPlayersTurnException;
-import checkersGame.exceptions.PointOutOfBoundsException;
+import checkersGame.exceptions.*;
 import gui.CheckersWebsocketGame;
 import gui.models.*;
 import gui.shared.SceneSwitcher;
@@ -115,7 +112,7 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
                 } else {
                     try {
                         game.movePiece(playerNumber, new models.Piece(piece.getType(), piece.getOldX(), piece.getOldY()), toBoard(piece.getLayoutX()), toBoard(piece.getLayoutY()));
-                    } catch (InvalidBoxException | NotPlayersTurnException | PointOutOfBoundsException e) {
+                    } catch (InvalidBoxException | NotPlayersTurnException | PointOutOfBoundsException | MustHitException e) {
                         e.printStackTrace();
                     }
                 }

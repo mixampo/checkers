@@ -10,6 +10,7 @@ public class CheckersPlayer {
     private Boolean ready;
     private List<Piece> pieces;
     private Board gameBoard;
+    private char color;
 
     public String getName() {
         return name;
@@ -59,6 +60,14 @@ public class CheckersPlayer {
         this.gameBoard = gameBoard;
     }
 
+    public char getColor() {
+        return color;
+    }
+
+    public void setColor(char color) {
+        this.color = color;
+    }
+
     public CheckersPlayer(String name, int playerNumber, Boolean onTurn, Boolean ready, List<Piece> pieces, Board gameBoard) {
         this.name = name;
         this.playerNumber = playerNumber;
@@ -89,6 +98,7 @@ public class CheckersPlayer {
         ready = false;
         pieces = new ArrayList<>();
         addAllPiecesToList();
+        color = (playerNumber == 0) ? 'W' : 'R';
         gameBoard = new Board(10, 10, playerNumber);
     }
 
