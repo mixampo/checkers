@@ -1,6 +1,7 @@
 package checkersGame;
 
 import checkersGame.exceptions.InvalidBoxException;
+import checkersGame.exceptions.MustHitException;
 import checkersGame.exceptions.NotPlayersTurnException;
 import checkersGame.exceptions.PointOutOfBoundsException;
 import models.*;
@@ -49,6 +50,15 @@ public class MultiCheckersGame extends CheckersGame {
         }
 
         if (Math.abs(newX - oldX) == 1 && newY - oldY == piece.getType().getMoveDir()) {
+
+            try {
+                checkForPossibleHit(playerNumber);
+            } catch (MustHitException e) {
+                noMove(playerNumber, oldX, oldY, "Must hit when possible!");
+                e.printStackTrace();
+                throw new InvalidBoxException();
+            }
+
             playerBoard.getBox(oldX, oldY).setPiece(null);
             b.setPiece(piece);
             piece.setPlace(b);
@@ -57,7 +67,7 @@ public class MultiCheckersGame extends CheckersGame {
             updatePlayerBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
             updateOpponentBoard(playerNumber, MoveType.NORMAL, newX, newY, oldX, oldY);
 
-        } else if (Math.abs(newX - oldX) == 2 && newY - oldY == piece.getType().getMoveDir() * 2) {
+        } else if (Math.abs(newX - oldX) == 2 && (newY - oldY == piece.getType().getMoveDir() * 2 || newY - oldY == piece.getType().getMoveDir() * -2)) {
 
             int x1 = oldX + (newX - oldX) / 2;
             int y1 = oldY + (newY - oldY) / 2;

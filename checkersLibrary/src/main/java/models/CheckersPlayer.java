@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CheckersPlayer {
     private String name;
-    private int playerNr;
+    private int playerNumber;
     private Boolean onTurn;
     private Boolean ready;
     private List<Piece> pieces;
@@ -19,12 +19,12 @@ public class CheckersPlayer {
         this.name = name;
     }
 
-    public int getPlayerNr() {
-        return playerNr;
+    public int getPlayerNumber() {
+        return playerNumber;
     }
 
-    public void setPlayerNr(int playerNr) {
-        this.playerNr = playerNr;
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
     }
 
     public Boolean getOnTurn() {
@@ -59,37 +59,37 @@ public class CheckersPlayer {
         this.gameBoard = gameBoard;
     }
 
-    public CheckersPlayer(String name, int playerNr, Boolean onTurn, Boolean ready, List<Piece> pieces, Board gameBoard) {
+    public CheckersPlayer(String name, int playerNumber, Boolean onTurn, Boolean ready, List<Piece> pieces, Board gameBoard) {
         this.name = name;
-        this.playerNr = playerNr;
+        this.playerNumber = playerNumber;
         this.onTurn = onTurn;
         this.ready = ready;
         this.pieces = pieces;
         this.gameBoard = gameBoard;
     }
 
-    public CheckersPlayer(String name, int playerNr, Boolean onTurn, Boolean ready, List<Piece> pieces) {
+    public CheckersPlayer(String name, int playerNumber, Boolean onTurn, Boolean ready, List<Piece> pieces) {
         this.name = name;
-        this.playerNr = playerNr;
+        this.playerNumber = playerNumber;
         this.onTurn = onTurn;
         this.ready = ready;
         this.pieces = pieces;
     }
 
-    public CheckersPlayer(String name, int playerNr, Boolean onTurn, Boolean ready) {
+    public CheckersPlayer(String name, int playerNumber, Boolean onTurn, Boolean ready) {
         this.name = name;
-        this.playerNr = playerNr;
+        this.playerNumber = playerNumber;
         this.onTurn = onTurn;
         this.ready = ready;
     }
 
-    public CheckersPlayer(String name, int playerNr) {
+    public CheckersPlayer(String name, int playerNumber) {
         this.name = name;
-        this.playerNr = playerNr;
+        this.playerNumber = playerNumber;
         ready = false;
         pieces = new ArrayList<>();
         addAllPiecesToList();
-        gameBoard = new Board(10, 10, playerNr);
+        gameBoard = new Board(10, 10, playerNumber);
     }
 
     public void readyUp() {
@@ -107,7 +107,7 @@ public class CheckersPlayer {
 
     public void addAllPiecesToList() {
         for (int i = 0; i < 21; i++) {
-            pieces.add(new Piece(this));
+            pieces.add(new Piece((playerNumber == 0) ? PieceType.WHITE : PieceType.RED ,this));
         }
     }
 

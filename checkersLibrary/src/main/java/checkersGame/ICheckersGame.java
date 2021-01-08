@@ -1,6 +1,7 @@
 package checkersGame;
 
 import checkersGame.exceptions.InvalidBoxException;
+import checkersGame.exceptions.MustHitException;
 import checkersGame.exceptions.NotPlayersTurnException;
 import checkersGame.exceptions.PointOutOfBoundsException;
 import models.Piece;
