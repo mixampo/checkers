@@ -18,18 +18,22 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import service.ApiCallService;
+import service.IApiCallService;
 
 @Controller
 public class PlayerController implements ICheckersGUI {
     final SimpMessagingTemplate websocket;
     private final static String endpoint = "/game/checkers";
     protected ICheckersGame game;
+    private IApiCallService apiCallService;
     private ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     public PlayerController(SimpMessagingTemplate websocket) {
         this.websocket = websocket;
         game = new MultiCheckersGame();
+        apiCallService = new ApiCallService();
     }
 
     @Override
@@ -77,6 +81,10 @@ public class PlayerController implements ICheckersGUI {
     public void showWinner(int playerNumber) {
         this.websocket.convertAndSend(endpoint, new GameMessage(playerNumber, MessageTypes.SHOW_WINNER, String.valueOf(playerNumber)));
         this.websocket.convertAndSend(endpoint, new GameMessage(1 - playerNumber, MessageTypes.SHOW_WINNER, String.valueOf(playerNumber)));
+
+        //TODO update scoreboardItem on with API
+//        apiCallService.updateScoreBoardItem();
+
         this.game = new MultiCheckersGame();
     }
 
