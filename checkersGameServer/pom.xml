@@ -68,10 +68,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-war-plugin -->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
-            <version>3.2.3</version>
+            <version>3.3.1</version>
         </dependency>
         <dependency>
             <artifactId>checkersLibrary</artifactId>
