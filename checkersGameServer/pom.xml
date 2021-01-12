@@ -69,6 +69,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+        <dependency>
             <artifactId>checkersLibrary</artifactId>
             <groupId>org.se3</groupId>
             <version>0.0.1-SNAPSHOT</version>
