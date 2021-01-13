@@ -106,6 +106,10 @@ public class Piece {
         this.isHit = false;
     }
 
+    public Piece(char color) {
+        this.color = color;
+    }
+
     public Piece() {
 
     }

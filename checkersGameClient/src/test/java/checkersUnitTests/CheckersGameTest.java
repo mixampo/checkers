@@ -1,5 +1,6 @@
 package checkersUnitTests;
 
+import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
 import checkersGame.exceptions.InvalidBoxException;
 import checkersGame.exceptions.MustHitException;
@@ -8,12 +9,13 @@ import checkersGame.exceptions.PointOutOfBoundsException;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mockito;
 
 public class CheckersGameTest {
 
     private ICheckersGame game;
-    private MockCheckersApplication playerApplication;
-    private MockCheckersApplication opponentApplication;
+    private ICheckersGUI playerApplication;
+    private ICheckersGUI opponentApplication;
     int playerNumber;
 
     public CheckersGameTest() {
@@ -21,7 +23,7 @@ public class CheckersGameTest {
 
     @BeforeEach
     void setUp() {
-
+        playerApplication = Mockito.mock(ICheckersGUI.class);
     }
 
     @Test

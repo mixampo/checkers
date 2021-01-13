@@ -1,5 +1,8 @@
 package models;
 
+import checkersGame.exceptions.InvalidBoxException;
+import utils.BoardPrinter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,14 @@ public class Board {
 
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    public int getBoxSize() {
+        return boxSize;
+    }
+
+    public void setBoxSize(int boxSize) {
+        this.boxSize = boxSize;
     }
 
     public int getLength() {
@@ -91,5 +102,22 @@ public class Board {
 
     public int toBoard(double pixel) {
         return (int) (pixel + boxSize / 2) / boxSize;
+    }
+
+    public void occupyBox(int x, int y, Piece piece) {
+        if ((x + y) % 2 != 0) {
+            getBox(x, y).setPiece(piece);
+        } else {
+            throw new IllegalArgumentException("Can't be placed on this box!");
+        }
+    }
+
+    public boolean isBoxAvailable(int x, int y) {
+        return getBox(x, y).getPiece() == null;
+    }
+
+    @Override
+    public String toString() {
+        return BoardPrinter.toString(boxes);
     }
 }
