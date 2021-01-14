@@ -1,12 +1,27 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScoreboardItem {
+
+    @JsonProperty("id")
     private int id;
+
+    @JsonProperty("user")
     private User user;
+
+    @JsonProperty("score")
     private int score;
-    private LocalDate date;
+
+    @JsonProperty("gameDate")
+    private LocalDate gameDate;
+
+    @JsonProperty("win")
     private boolean win;
 
     public int getId() {
@@ -33,12 +48,12 @@ public class ScoreboardItem {
         this.score = score;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getGameDate() {
+        return gameDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setGameDate(LocalDate gameDate) {
+        this.gameDate = gameDate;
     }
 
     public boolean isWin() {
@@ -49,11 +64,11 @@ public class ScoreboardItem {
         this.win = win;
     }
 
-    public ScoreboardItem(int id, User user, int score, LocalDate date, boolean win) {
+    public ScoreboardItem(int id, User user, int score, LocalDate gameDate, boolean win) {
         this.id = id;
         this.user = user;
         this.score = score;
-        this.date = date;
+        this.gameDate = gameDate;
         this.win = win;
     }
 

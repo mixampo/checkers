@@ -2,7 +2,6 @@ package models;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;

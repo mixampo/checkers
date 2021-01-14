@@ -181,18 +181,20 @@ public class CheckersClientGui extends Application implements ICheckersGUI {
 
     @Override
     public void showWinner(int playerNumber) {
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                Piece piece = board[x][y].getPiece();
-                if (piece != null) {
-                    board[x][x].setPiece(null);
-                    pieceGroup.getChildren().remove(piece);
+        Platform.runLater(() -> {
+            for (int x = 0; x < WIDTH; x++) {
+                for (int y = 0; y < HEIGHT; y++) {
+                    Piece piece = board[x][y].getPiece();
+                    if (piece != null) {
+                        board[x][x].setPiece(null);
+                        pieceGroup.getChildren().remove(piece);
+                    }
+                    board[x][y].setFill(this.playerNumber == playerNumber ? Color.GREEN : Color.RED);
                 }
-                board[x][y].setFill(this.playerNumber == playerNumber ? Color.GREEN : Color.RED);
             }
-        }
-        showInfoMessage(playerNumber, "Player with playerNumber: " + playerNumber + " has won the game!");
-        gameEnded = true;
+            showInfoMessage(playerNumber, "Player with playerNumber: " + playerNumber + " has won the game!");
+            gameEnded = true;
+        });
     }
 
     @Override

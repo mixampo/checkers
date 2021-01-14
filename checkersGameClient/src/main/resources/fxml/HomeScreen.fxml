@@ -17,7 +17,7 @@
           <TableColumn fx:id="id" prefWidth="99.0" text="Id" />
           <TableColumn fx:id="username" prefWidth="89.0" text="Username" />
             <TableColumn fx:id="score" prefWidth="95.0" text="Score" />
-            <TableColumn fx:id="date" prefWidth="93.0" text="Date" />
+            <TableColumn fx:id="gameDate" prefWidth="93.0" text="Date" />
             <TableColumn fx:id="win" prefWidth="93.0" text="Win" />
         </columns>
       </TableView>

@@ -1,3 +1,5 @@
+package checkersUnitTests;
+
 import models.Board;
 import models.Box;
 import models.Piece;
@@ -12,7 +14,7 @@ public class PieceTest {
     private Piece piece;
 
     @BeforeEach
-    void setUp() {
+    void init() {
         this.playerNumber = 0;
         this.board = new Board(10, 10, playerNumber);
         piece = new Piece('W');

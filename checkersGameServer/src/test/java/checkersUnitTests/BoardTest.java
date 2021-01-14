@@ -1,3 +1,5 @@
+package checkersUnitTests;
+
 import models.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,13 +16,13 @@ public class BoardTest {
     private List<Piece> pieces;
 
     @BeforeEach
-    void setUp() {
+    void init() {
         this.playerNumber = 0;
         this.player = new CheckersPlayer("player", playerNumber);
         this.board = new Board(10, 10, playerNumber);
         this.pieces = new ArrayList<>();
 
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < 20; i++) {
             pieces.add(new Piece('W'));
         }
     }

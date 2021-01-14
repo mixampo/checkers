@@ -5,11 +5,13 @@ import checkersGame.exceptions.CheckersGameFullException;
 import gui.scenes.CheckersClientGui;
 import gui.shared.SceneSwitcher;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.ScoreboardItem;
 import models.User;
@@ -18,17 +20,18 @@ import service.IApiCallService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class HomeScreenController implements Initializable {
     public Button btnJoinGame;
     public Button btnReadyUp;
-    public TableView tvScoreboard;
-    public TableColumn id;
-    public TableColumn username;
-    public TableColumn score;
-    public TableColumn date;
-    public TableColumn win;
+    public TableView<ScoreboardItem> tvScoreboard;
+    public TableColumn<ScoreboardItem, Integer> id;
+    public TableColumn<ScoreboardItem, String> username;
+    public TableColumn<ScoreboardItem, Integer> score;
+    public TableColumn<ScoreboardItem, LocalDate> gameDate;
+    public TableColumn<ScoreboardItem, Boolean> win;
     public Button btnExitApplication;
     public Button btnRefreshScoreboard;
     public Button btnLogout;
@@ -49,11 +52,18 @@ public class HomeScreenController implements Initializable {
         apiCallService = new ApiCallService();
         cbGameMode.getItems().addAll("Singleplayer", "Multiplayer");
         btnReadyUp.setDisable(true);
+        
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        username.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getUser().getUsername()));
+        score.setCellValueFactory(new PropertyValueFactory<>("score"));
+        gameDate.setCellValueFactory(new PropertyValueFactory<>("gameDate"));
+        win.setCellValueFactory(new PropertyValueFactory<>("win"));
     }
 
     public void setLoggedInUser(User user) {
         this.loggedInUser = user;
         lblName.setText("Hello, " + loggedInUser.getUsername());
+        refreshScoreboard(null);
     }
 
     public void joinGame(ActionEvent actionEvent) {
@@ -90,11 +100,8 @@ public class HomeScreenController implements Initializable {
     }
 
     public void refreshScoreboard(ActionEvent actionEvent) {
-
-        //TODO fix view of scoreboard
         try {
             scoreboard = FXCollections.observableList(apiCallService.getScoreboard(loggedInUser));
-            System.out.println(scoreboard.get(0));
             tvScoreboard.setItems(scoreboard);
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package checkersUnitTests;
+package checkersComponentTests;
 
 import checkersGame.ICheckersGUI;
 import checkersGame.ICheckersGame;
@@ -24,6 +24,8 @@ public class CheckersGameTest {
     @BeforeEach
     void setUp() {
         playerApplication = Mockito.mock(ICheckersGUI.class);
+        opponentApplication = Mockito.mock(ICheckersGUI.class);
+        game = Mockito.mock(ICheckersGame.class);
     }
 
     @Test

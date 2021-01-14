@@ -1,4 +1,4 @@
-package checkersUnitTests;
+package checkersComponentTests;
 
 import checkersGame.ICheckersGUI;
 
