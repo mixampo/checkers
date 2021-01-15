@@ -51,6 +51,10 @@ public abstract class CheckersGame implements ICheckersGame {
 
     }
 
+    @Override
+    public CheckersPlayer getCheckersPlayer(int playerNumber) {
+        return checkersPlayers[playerNumber];
+    }
 
     protected void checkForPossibleHit(int playerNumber) throws MustHitException {
         Board playerBoard = checkersPlayers[playerNumber].getGameBoard();

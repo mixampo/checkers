@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import communication.GameMessage;
 import communication.MessageTypes;
 import communication.dto.*;
+import models.CheckersPlayer;
 import models.Piece;
 import models.User;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -191,6 +192,11 @@ public class CheckersWebsocketGame extends StompSessionHandlerAdapter implements
     @Override
     public void movePiece(int playerNumber, Piece piece, int newX, int newY) throws InvalidBoxException, NotPlayersTurnException, MustHitException {
         this.session.send("/action/move-piece", new PositionAction(playerNumber, piece, newX, newY));
+    }
+
+    @Override
+    public CheckersPlayer getCheckersPlayer(int playerNumber) {
+        return null;
     }
 
     @Override

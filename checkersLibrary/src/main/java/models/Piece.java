@@ -110,6 +110,8 @@ public class Piece {
         this.color = color;
     }
 
+
+
     public Piece() {
 
     }
