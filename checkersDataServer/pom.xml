@@ -9,9 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>checkersDataServer</artifactId>
+    <packaging>war</packaging>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
     </properties>
     <dependencies>
@@ -50,11 +49,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.21</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -79,11 +73,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>3.2.3</version>
         </dependency>
         <dependency>
             <groupId>org.sonarsource.scanner.maven</groupId>
@@ -147,13 +136,61 @@
             <artifactId>spring-security-messaging</artifactId>
             <version>5.4.1</version>
         </dependency>
+        <dependency>
+            <artifactId>checkersLibrary</artifactId>
+            <groupId>org.se3</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.6</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -163,27 +200,26 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <!--            <properties>-->
-            <!--                &lt;!&ndash; Optional URL to server. Default value is http://localhost:9000 &ndash;&gt;-->
-            <!--                <sonar.host.url>-->
-            <!--                    https://sonar.beekmans.dev-->
-            <!--                </sonar.host.url>-->
-            <!--            </properties>-->
-        </profile>
-        <profile>
-            <id>dev</id>
             <properties>
-                <activatedProperties>dev</activatedProperties>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <activatedProperties>prod</activatedProperties>
+                <sonar.host.url>
+                    https://sonar.beekmans.dev
+                </sonar.host.url>
             </properties>
         </profile>
+        <!--        <profile>-->
+        <!--            <id>dev</id>-->
+        <!--            <properties>-->
+        <!--                <activatedProperties>dev</activatedProperties>-->
+        <!--            </properties>-->
+        <!--            <activation>-->
+        <!--                <activeByDefault>true</activeByDefault>-->
+        <!--            </activation>-->
+        <!--        </profile>-->
+        <!--        <profile>-->
+        <!--            <id>prod</id>-->
+        <!--            <properties>-->
+        <!--                <activatedProperties>prod</activatedProperties>-->
+        <!--            </properties>-->
+        <!--        </profile>-->
     </profiles>
 </project>

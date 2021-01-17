@@ -14,11 +14,11 @@ public class JwtResponse {
         this.token = token;
     }
 
-    public User getAccount() {
+    public User getUser() {
         return user;
     }
 
-    public void setAccountId(User user) {
+    public void setUserId(User user) {
         this.user = user;
     }
 

@@ -2,7 +2,6 @@ package models;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,23 +18,23 @@ public class ScoreboardItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn
     private User user;
 
-    @NotNull
+    @Column(nullable = false)
     private int score;
 
-    @NotNull
-    private LocalDate date;
+    @Column(nullable = false)
+    private LocalDate gameDate;
 
-    @NotNull
+    @Column(nullable = false)
     private boolean win;
 
-    public ScoreboardItem(User user, int score, LocalDate date, boolean win) {
+    public ScoreboardItem(User user, int score, LocalDate gameDate, boolean win) {
         this.user = user;
         this.score = score;
-        this.date = date;
+        this.gameDate = gameDate;
         this.win = win;
     }
 }
