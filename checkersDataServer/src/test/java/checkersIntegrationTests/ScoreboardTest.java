@@ -35,7 +35,7 @@ import static java.lang.String.format;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class scoreboardTest {
+public class ScoreboardTest {
 
     private JSONParser parser;
     private Gson g;
